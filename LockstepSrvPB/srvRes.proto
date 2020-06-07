@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package lspb;
+
+import "lsEnum.proto";
+import "gameProto.proto";
+
+option java_package = "org.bro.lssrv.pb";
+
+/** 所有下行请求都是serverResponse，服务器会传递具体内容的标示methodId，客户端根据methodId进行处理 */
+message SrvRes {
+  /** 返回方法名 */
+  SrvMsgType methodId = 1;
+  /** 返回码，包含success和错误码 */
+  Result result = 2;
+  /** 错误展示字段，如果result不为0，则取该字段给用户展示 */
+  string errStr = 3;
+  /** 具体返回内容proto */
+  SrvEnterGame srvEnterGame = 4;
+}
+
+enum SrvMsgType {
+  /** default */
+  errorClientType = 0;
+  /** 进入游戏 */
+  serverEnterGame = 101;
+}

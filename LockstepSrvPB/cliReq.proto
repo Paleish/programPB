@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package lspb;
+
+import "lsEnum.proto";
+import "gameProto.proto";
+
+option java_package = "org.bro.lssrv.pb";
+
+/** 所有上行请求都是clientRequest，服务器根据methodId读取具体的message内容,当 */
+message CliReq {
+  /** 用户名 */
+  int32 userId = 1;
+  /** 请求模块 */
+  ModuleId moduleId = 2;  
+  /** 请求方法名 */
+  ClientMsgType methodId = 3;
+  /** 具体请求内容proto */
+  CliEnterGame cliEnterGame = 4;
+}
+
+enum ClientMsgType {
+  /** default */
+  errorClientType = 0;
+  /** 进入游戏 */
+  cliEnterGame = 101;
+}

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package lspb;
+
+option java_package = "org.bro.lssrv.pb";
+
+message CliEnterGame{
+
+}
+
+message SrvEnterGame{
+
+}

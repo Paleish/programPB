@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package lspb;
+
+option java_package = "org.bro.lssrv.pb";
+
+enum ModuleId{
+	/** default */
+	UnknownModel = 0;
+	/** game */
+	Game = 1;
+}
+
+enum Result {
+  /** 成功 */
+  success = 0;
+  /** 任意失败 */
+  err = 1;
+  /** 没有该方法错误 */
+  errNoMethod = 2;
+  /** 消息为空 */
+  errNulMsg = 3;
+}
