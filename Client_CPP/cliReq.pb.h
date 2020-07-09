@@ -58,13 +58,15 @@ void InitDefaults();
 
 enum ClientMsgType {
   errorClientType = 0,
-  cliEnterGame = 101,
+  cliEnterRoom = 101,
+  cliInitOver = 102,
+  cliOperate = 103,
   ClientMsgType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   ClientMsgType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool ClientMsgType_IsValid(int value);
 const ClientMsgType ClientMsgType_MIN = errorClientType;
-const ClientMsgType ClientMsgType_MAX = cliEnterGame;
+const ClientMsgType ClientMsgType_MAX = cliOperate;
 const int ClientMsgType_ARRAYSIZE = ClientMsgType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ClientMsgType_descriptor();
@@ -160,14 +162,32 @@ class CliReq : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
 
   // accessors -------------------------------------------------------
 
-  // .lspb.CliEnterGame cliEnterGame = 4;
-  bool has_clientergame() const;
-  void clear_clientergame();
-  static const int kCliEnterGameFieldNumber = 4;
-  const ::lspb::CliEnterGame& clientergame() const;
-  ::lspb::CliEnterGame* mutable_clientergame();
-  ::lspb::CliEnterGame* release_clientergame();
-  void set_allocated_clientergame(::lspb::CliEnterGame* clientergame);
+  // .lspb.CliEnterRoom cliEnterRoom = 101;
+  bool has_clienterroom() const;
+  void clear_clienterroom();
+  static const int kCliEnterRoomFieldNumber = 101;
+  const ::lspb::CliEnterRoom& clienterroom() const;
+  ::lspb::CliEnterRoom* mutable_clienterroom();
+  ::lspb::CliEnterRoom* release_clienterroom();
+  void set_allocated_clienterroom(::lspb::CliEnterRoom* clienterroom);
+
+  // .lspb.CliInitOver cliInitOver = 102;
+  bool has_cliinitover() const;
+  void clear_cliinitover();
+  static const int kCliInitOverFieldNumber = 102;
+  const ::lspb::CliInitOver& cliinitover() const;
+  ::lspb::CliInitOver* mutable_cliinitover();
+  ::lspb::CliInitOver* release_cliinitover();
+  void set_allocated_cliinitover(::lspb::CliInitOver* cliinitover);
+
+  // .lspb.CliOperate cliOperate = 103;
+  bool has_clioperate() const;
+  void clear_clioperate();
+  static const int kCliOperateFieldNumber = 103;
+  const ::lspb::CliOperate& clioperate() const;
+  ::lspb::CliOperate* mutable_clioperate();
+  ::lspb::CliOperate* release_clioperate();
+  void set_allocated_clioperate(::lspb::CliOperate* clioperate);
 
   // int32 userId = 1;
   void clear_userid();
@@ -191,7 +211,9 @@ class CliReq : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::lspb::CliEnterGame* clientergame_;
+  ::lspb::CliEnterRoom* clienterroom_;
+  ::lspb::CliInitOver* cliinitover_;
+  ::lspb::CliOperate* clioperate_;
   ::google::protobuf::int32 userid_;
   int moduleid_;
   int methodid_;
@@ -252,44 +274,124 @@ inline void CliReq::set_methodid(::lspb::ClientMsgType value) {
   // @@protoc_insertion_point(field_set:lspb.CliReq.methodId)
 }
 
-// .lspb.CliEnterGame cliEnterGame = 4;
-inline bool CliReq::has_clientergame() const {
-  return this != internal_default_instance() && clientergame_ != NULL;
+// .lspb.CliEnterRoom cliEnterRoom = 101;
+inline bool CliReq::has_clienterroom() const {
+  return this != internal_default_instance() && clienterroom_ != NULL;
 }
-inline void CliReq::clear_clientergame() {
-  if (GetArenaNoVirtual() == NULL && clientergame_ != NULL) delete clientergame_;
-  clientergame_ = NULL;
+inline void CliReq::clear_clienterroom() {
+  if (GetArenaNoVirtual() == NULL && clienterroom_ != NULL) delete clienterroom_;
+  clienterroom_ = NULL;
 }
-inline const ::lspb::CliEnterGame& CliReq::clientergame() const {
-  const ::lspb::CliEnterGame* p = clientergame_;
-  // @@protoc_insertion_point(field_get:lspb.CliReq.cliEnterGame)
-  return p != NULL ? *p : *reinterpret_cast<const ::lspb::CliEnterGame*>(
-      &::lspb::_CliEnterGame_default_instance_);
+inline const ::lspb::CliEnterRoom& CliReq::clienterroom() const {
+  const ::lspb::CliEnterRoom* p = clienterroom_;
+  // @@protoc_insertion_point(field_get:lspb.CliReq.cliEnterRoom)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::CliEnterRoom*>(
+      &::lspb::_CliEnterRoom_default_instance_);
 }
-inline ::lspb::CliEnterGame* CliReq::mutable_clientergame() {
+inline ::lspb::CliEnterRoom* CliReq::mutable_clienterroom() {
   
-  if (clientergame_ == NULL) {
-    clientergame_ = new ::lspb::CliEnterGame;
+  if (clienterroom_ == NULL) {
+    clienterroom_ = new ::lspb::CliEnterRoom;
   }
-  // @@protoc_insertion_point(field_mutable:lspb.CliReq.cliEnterGame)
-  return clientergame_;
+  // @@protoc_insertion_point(field_mutable:lspb.CliReq.cliEnterRoom)
+  return clienterroom_;
 }
-inline ::lspb::CliEnterGame* CliReq::release_clientergame() {
-  // @@protoc_insertion_point(field_release:lspb.CliReq.cliEnterGame)
+inline ::lspb::CliEnterRoom* CliReq::release_clienterroom() {
+  // @@protoc_insertion_point(field_release:lspb.CliReq.cliEnterRoom)
   
-  ::lspb::CliEnterGame* temp = clientergame_;
-  clientergame_ = NULL;
+  ::lspb::CliEnterRoom* temp = clienterroom_;
+  clienterroom_ = NULL;
   return temp;
 }
-inline void CliReq::set_allocated_clientergame(::lspb::CliEnterGame* clientergame) {
-  delete clientergame_;
-  clientergame_ = clientergame;
-  if (clientergame) {
+inline void CliReq::set_allocated_clienterroom(::lspb::CliEnterRoom* clienterroom) {
+  delete clienterroom_;
+  clienterroom_ = clienterroom;
+  if (clienterroom) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:lspb.CliReq.cliEnterGame)
+  // @@protoc_insertion_point(field_set_allocated:lspb.CliReq.cliEnterRoom)
+}
+
+// .lspb.CliInitOver cliInitOver = 102;
+inline bool CliReq::has_cliinitover() const {
+  return this != internal_default_instance() && cliinitover_ != NULL;
+}
+inline void CliReq::clear_cliinitover() {
+  if (GetArenaNoVirtual() == NULL && cliinitover_ != NULL) delete cliinitover_;
+  cliinitover_ = NULL;
+}
+inline const ::lspb::CliInitOver& CliReq::cliinitover() const {
+  const ::lspb::CliInitOver* p = cliinitover_;
+  // @@protoc_insertion_point(field_get:lspb.CliReq.cliInitOver)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::CliInitOver*>(
+      &::lspb::_CliInitOver_default_instance_);
+}
+inline ::lspb::CliInitOver* CliReq::mutable_cliinitover() {
+  
+  if (cliinitover_ == NULL) {
+    cliinitover_ = new ::lspb::CliInitOver;
+  }
+  // @@protoc_insertion_point(field_mutable:lspb.CliReq.cliInitOver)
+  return cliinitover_;
+}
+inline ::lspb::CliInitOver* CliReq::release_cliinitover() {
+  // @@protoc_insertion_point(field_release:lspb.CliReq.cliInitOver)
+  
+  ::lspb::CliInitOver* temp = cliinitover_;
+  cliinitover_ = NULL;
+  return temp;
+}
+inline void CliReq::set_allocated_cliinitover(::lspb::CliInitOver* cliinitover) {
+  delete cliinitover_;
+  cliinitover_ = cliinitover;
+  if (cliinitover) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:lspb.CliReq.cliInitOver)
+}
+
+// .lspb.CliOperate cliOperate = 103;
+inline bool CliReq::has_clioperate() const {
+  return this != internal_default_instance() && clioperate_ != NULL;
+}
+inline void CliReq::clear_clioperate() {
+  if (GetArenaNoVirtual() == NULL && clioperate_ != NULL) delete clioperate_;
+  clioperate_ = NULL;
+}
+inline const ::lspb::CliOperate& CliReq::clioperate() const {
+  const ::lspb::CliOperate* p = clioperate_;
+  // @@protoc_insertion_point(field_get:lspb.CliReq.cliOperate)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::CliOperate*>(
+      &::lspb::_CliOperate_default_instance_);
+}
+inline ::lspb::CliOperate* CliReq::mutable_clioperate() {
+  
+  if (clioperate_ == NULL) {
+    clioperate_ = new ::lspb::CliOperate;
+  }
+  // @@protoc_insertion_point(field_mutable:lspb.CliReq.cliOperate)
+  return clioperate_;
+}
+inline ::lspb::CliOperate* CliReq::release_clioperate() {
+  // @@protoc_insertion_point(field_release:lspb.CliReq.cliOperate)
+  
+  ::lspb::CliOperate* temp = clioperate_;
+  clioperate_ = NULL;
+  return temp;
+}
+inline void CliReq::set_allocated_clioperate(::lspb::CliOperate* clioperate) {
+  delete clioperate_;
+  clioperate_ = clioperate;
+  if (clioperate) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:lspb.CliReq.cliOperate)
 }
 
 #ifdef __GNUC__

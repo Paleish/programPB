@@ -58,13 +58,17 @@ void InitDefaults();
 
 enum SrvMsgType {
   errorClientType = 0,
-  serverEnterGame = 101,
+  srvEnterRoom = 101,
+  srvInitOver = 102,
+  bGameInit = 1001,
+  bGameStart = 1002,
+  bGameFrame = 1003,
   SrvMsgType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   SrvMsgType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool SrvMsgType_IsValid(int value);
 const SrvMsgType SrvMsgType_MIN = errorClientType;
-const SrvMsgType SrvMsgType_MAX = serverEnterGame;
+const SrvMsgType SrvMsgType_MAX = bGameFrame;
 const int SrvMsgType_ARRAYSIZE = SrvMsgType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* SrvMsgType_descriptor();
@@ -174,14 +178,50 @@ class SrvRes : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::std::string* release_errstr();
   void set_allocated_errstr(::std::string* errstr);
 
-  // .lspb.SrvEnterGame srvEnterGame = 4;
-  bool has_srventergame() const;
-  void clear_srventergame();
-  static const int kSrvEnterGameFieldNumber = 4;
-  const ::lspb::SrvEnterGame& srventergame() const;
-  ::lspb::SrvEnterGame* mutable_srventergame();
-  ::lspb::SrvEnterGame* release_srventergame();
-  void set_allocated_srventergame(::lspb::SrvEnterGame* srventergame);
+  // .lspb.SrvEnterRoom srvEnterRoom = 101;
+  bool has_srventerroom() const;
+  void clear_srventerroom();
+  static const int kSrvEnterRoomFieldNumber = 101;
+  const ::lspb::SrvEnterRoom& srventerroom() const;
+  ::lspb::SrvEnterRoom* mutable_srventerroom();
+  ::lspb::SrvEnterRoom* release_srventerroom();
+  void set_allocated_srventerroom(::lspb::SrvEnterRoom* srventerroom);
+
+  // .lspb.SrvInitOver srvInitOver = 102;
+  bool has_srvinitover() const;
+  void clear_srvinitover();
+  static const int kSrvInitOverFieldNumber = 102;
+  const ::lspb::SrvInitOver& srvinitover() const;
+  ::lspb::SrvInitOver* mutable_srvinitover();
+  ::lspb::SrvInitOver* release_srvinitover();
+  void set_allocated_srvinitover(::lspb::SrvInitOver* srvinitover);
+
+  // .lspb.BGameInit bGameInit = 1001;
+  bool has_bgameinit() const;
+  void clear_bgameinit();
+  static const int kBGameInitFieldNumber = 1001;
+  const ::lspb::BGameInit& bgameinit() const;
+  ::lspb::BGameInit* mutable_bgameinit();
+  ::lspb::BGameInit* release_bgameinit();
+  void set_allocated_bgameinit(::lspb::BGameInit* bgameinit);
+
+  // .lspb.BGameStart bGameStart = 1002;
+  bool has_bgamestart() const;
+  void clear_bgamestart();
+  static const int kBGameStartFieldNumber = 1002;
+  const ::lspb::BGameStart& bgamestart() const;
+  ::lspb::BGameStart* mutable_bgamestart();
+  ::lspb::BGameStart* release_bgamestart();
+  void set_allocated_bgamestart(::lspb::BGameStart* bgamestart);
+
+  // .lspb.BGameFrame bGameFrame = 1003;
+  bool has_bgameframe() const;
+  void clear_bgameframe();
+  static const int kBGameFrameFieldNumber = 1003;
+  const ::lspb::BGameFrame& bgameframe() const;
+  ::lspb::BGameFrame* mutable_bgameframe();
+  ::lspb::BGameFrame* release_bgameframe();
+  void set_allocated_bgameframe(::lspb::BGameFrame* bgameframe);
 
   // .lspb.SrvMsgType methodId = 1;
   void clear_methodid();
@@ -200,7 +240,11 @@ class SrvRes : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr errstr_;
-  ::lspb::SrvEnterGame* srventergame_;
+  ::lspb::SrvEnterRoom* srventerroom_;
+  ::lspb::SrvInitOver* srvinitover_;
+  ::lspb::BGameInit* bgameinit_;
+  ::lspb::BGameStart* bgamestart_;
+  ::lspb::BGameFrame* bgameframe_;
   int methodid_;
   int result_;
   mutable int _cached_size_;
@@ -299,44 +343,204 @@ inline void SrvRes::set_allocated_errstr(::std::string* errstr) {
   // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.errStr)
 }
 
-// .lspb.SrvEnterGame srvEnterGame = 4;
-inline bool SrvRes::has_srventergame() const {
-  return this != internal_default_instance() && srventergame_ != NULL;
+// .lspb.SrvEnterRoom srvEnterRoom = 101;
+inline bool SrvRes::has_srventerroom() const {
+  return this != internal_default_instance() && srventerroom_ != NULL;
 }
-inline void SrvRes::clear_srventergame() {
-  if (GetArenaNoVirtual() == NULL && srventergame_ != NULL) delete srventergame_;
-  srventergame_ = NULL;
+inline void SrvRes::clear_srventerroom() {
+  if (GetArenaNoVirtual() == NULL && srventerroom_ != NULL) delete srventerroom_;
+  srventerroom_ = NULL;
 }
-inline const ::lspb::SrvEnterGame& SrvRes::srventergame() const {
-  const ::lspb::SrvEnterGame* p = srventergame_;
-  // @@protoc_insertion_point(field_get:lspb.SrvRes.srvEnterGame)
-  return p != NULL ? *p : *reinterpret_cast<const ::lspb::SrvEnterGame*>(
-      &::lspb::_SrvEnterGame_default_instance_);
+inline const ::lspb::SrvEnterRoom& SrvRes::srventerroom() const {
+  const ::lspb::SrvEnterRoom* p = srventerroom_;
+  // @@protoc_insertion_point(field_get:lspb.SrvRes.srvEnterRoom)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::SrvEnterRoom*>(
+      &::lspb::_SrvEnterRoom_default_instance_);
 }
-inline ::lspb::SrvEnterGame* SrvRes::mutable_srventergame() {
+inline ::lspb::SrvEnterRoom* SrvRes::mutable_srventerroom() {
   
-  if (srventergame_ == NULL) {
-    srventergame_ = new ::lspb::SrvEnterGame;
+  if (srventerroom_ == NULL) {
+    srventerroom_ = new ::lspb::SrvEnterRoom;
   }
-  // @@protoc_insertion_point(field_mutable:lspb.SrvRes.srvEnterGame)
-  return srventergame_;
+  // @@protoc_insertion_point(field_mutable:lspb.SrvRes.srvEnterRoom)
+  return srventerroom_;
 }
-inline ::lspb::SrvEnterGame* SrvRes::release_srventergame() {
-  // @@protoc_insertion_point(field_release:lspb.SrvRes.srvEnterGame)
+inline ::lspb::SrvEnterRoom* SrvRes::release_srventerroom() {
+  // @@protoc_insertion_point(field_release:lspb.SrvRes.srvEnterRoom)
   
-  ::lspb::SrvEnterGame* temp = srventergame_;
-  srventergame_ = NULL;
+  ::lspb::SrvEnterRoom* temp = srventerroom_;
+  srventerroom_ = NULL;
   return temp;
 }
-inline void SrvRes::set_allocated_srventergame(::lspb::SrvEnterGame* srventergame) {
-  delete srventergame_;
-  srventergame_ = srventergame;
-  if (srventergame) {
+inline void SrvRes::set_allocated_srventerroom(::lspb::SrvEnterRoom* srventerroom) {
+  delete srventerroom_;
+  srventerroom_ = srventerroom;
+  if (srventerroom) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.srvEnterGame)
+  // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.srvEnterRoom)
+}
+
+// .lspb.SrvInitOver srvInitOver = 102;
+inline bool SrvRes::has_srvinitover() const {
+  return this != internal_default_instance() && srvinitover_ != NULL;
+}
+inline void SrvRes::clear_srvinitover() {
+  if (GetArenaNoVirtual() == NULL && srvinitover_ != NULL) delete srvinitover_;
+  srvinitover_ = NULL;
+}
+inline const ::lspb::SrvInitOver& SrvRes::srvinitover() const {
+  const ::lspb::SrvInitOver* p = srvinitover_;
+  // @@protoc_insertion_point(field_get:lspb.SrvRes.srvInitOver)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::SrvInitOver*>(
+      &::lspb::_SrvInitOver_default_instance_);
+}
+inline ::lspb::SrvInitOver* SrvRes::mutable_srvinitover() {
+  
+  if (srvinitover_ == NULL) {
+    srvinitover_ = new ::lspb::SrvInitOver;
+  }
+  // @@protoc_insertion_point(field_mutable:lspb.SrvRes.srvInitOver)
+  return srvinitover_;
+}
+inline ::lspb::SrvInitOver* SrvRes::release_srvinitover() {
+  // @@protoc_insertion_point(field_release:lspb.SrvRes.srvInitOver)
+  
+  ::lspb::SrvInitOver* temp = srvinitover_;
+  srvinitover_ = NULL;
+  return temp;
+}
+inline void SrvRes::set_allocated_srvinitover(::lspb::SrvInitOver* srvinitover) {
+  delete srvinitover_;
+  srvinitover_ = srvinitover;
+  if (srvinitover) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.srvInitOver)
+}
+
+// .lspb.BGameInit bGameInit = 1001;
+inline bool SrvRes::has_bgameinit() const {
+  return this != internal_default_instance() && bgameinit_ != NULL;
+}
+inline void SrvRes::clear_bgameinit() {
+  if (GetArenaNoVirtual() == NULL && bgameinit_ != NULL) delete bgameinit_;
+  bgameinit_ = NULL;
+}
+inline const ::lspb::BGameInit& SrvRes::bgameinit() const {
+  const ::lspb::BGameInit* p = bgameinit_;
+  // @@protoc_insertion_point(field_get:lspb.SrvRes.bGameInit)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::BGameInit*>(
+      &::lspb::_BGameInit_default_instance_);
+}
+inline ::lspb::BGameInit* SrvRes::mutable_bgameinit() {
+  
+  if (bgameinit_ == NULL) {
+    bgameinit_ = new ::lspb::BGameInit;
+  }
+  // @@protoc_insertion_point(field_mutable:lspb.SrvRes.bGameInit)
+  return bgameinit_;
+}
+inline ::lspb::BGameInit* SrvRes::release_bgameinit() {
+  // @@protoc_insertion_point(field_release:lspb.SrvRes.bGameInit)
+  
+  ::lspb::BGameInit* temp = bgameinit_;
+  bgameinit_ = NULL;
+  return temp;
+}
+inline void SrvRes::set_allocated_bgameinit(::lspb::BGameInit* bgameinit) {
+  delete bgameinit_;
+  bgameinit_ = bgameinit;
+  if (bgameinit) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.bGameInit)
+}
+
+// .lspb.BGameStart bGameStart = 1002;
+inline bool SrvRes::has_bgamestart() const {
+  return this != internal_default_instance() && bgamestart_ != NULL;
+}
+inline void SrvRes::clear_bgamestart() {
+  if (GetArenaNoVirtual() == NULL && bgamestart_ != NULL) delete bgamestart_;
+  bgamestart_ = NULL;
+}
+inline const ::lspb::BGameStart& SrvRes::bgamestart() const {
+  const ::lspb::BGameStart* p = bgamestart_;
+  // @@protoc_insertion_point(field_get:lspb.SrvRes.bGameStart)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::BGameStart*>(
+      &::lspb::_BGameStart_default_instance_);
+}
+inline ::lspb::BGameStart* SrvRes::mutable_bgamestart() {
+  
+  if (bgamestart_ == NULL) {
+    bgamestart_ = new ::lspb::BGameStart;
+  }
+  // @@protoc_insertion_point(field_mutable:lspb.SrvRes.bGameStart)
+  return bgamestart_;
+}
+inline ::lspb::BGameStart* SrvRes::release_bgamestart() {
+  // @@protoc_insertion_point(field_release:lspb.SrvRes.bGameStart)
+  
+  ::lspb::BGameStart* temp = bgamestart_;
+  bgamestart_ = NULL;
+  return temp;
+}
+inline void SrvRes::set_allocated_bgamestart(::lspb::BGameStart* bgamestart) {
+  delete bgamestart_;
+  bgamestart_ = bgamestart;
+  if (bgamestart) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.bGameStart)
+}
+
+// .lspb.BGameFrame bGameFrame = 1003;
+inline bool SrvRes::has_bgameframe() const {
+  return this != internal_default_instance() && bgameframe_ != NULL;
+}
+inline void SrvRes::clear_bgameframe() {
+  if (GetArenaNoVirtual() == NULL && bgameframe_ != NULL) delete bgameframe_;
+  bgameframe_ = NULL;
+}
+inline const ::lspb::BGameFrame& SrvRes::bgameframe() const {
+  const ::lspb::BGameFrame* p = bgameframe_;
+  // @@protoc_insertion_point(field_get:lspb.SrvRes.bGameFrame)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::BGameFrame*>(
+      &::lspb::_BGameFrame_default_instance_);
+}
+inline ::lspb::BGameFrame* SrvRes::mutable_bgameframe() {
+  
+  if (bgameframe_ == NULL) {
+    bgameframe_ = new ::lspb::BGameFrame;
+  }
+  // @@protoc_insertion_point(field_mutable:lspb.SrvRes.bGameFrame)
+  return bgameframe_;
+}
+inline ::lspb::BGameFrame* SrvRes::release_bgameframe() {
+  // @@protoc_insertion_point(field_release:lspb.SrvRes.bGameFrame)
+  
+  ::lspb::BGameFrame* temp = bgameframe_;
+  bgameframe_ = NULL;
+  return temp;
+}
+inline void SrvRes::set_allocated_bgameframe(::lspb::BGameFrame* bgameframe) {
+  delete bgameframe_;
+  bgameframe_ = bgameframe;
+  if (bgameframe) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.bGameFrame)
 }
 
 #ifdef __GNUC__

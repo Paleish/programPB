@@ -57,7 +57,11 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SrvRes, methodid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SrvRes, result_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SrvRes, errstr_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SrvRes, srventergame_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SrvRes, srventerroom_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SrvRes, srvinitover_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SrvRes, bgameinit_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SrvRes, bgamestart_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SrvRes, bgameframe_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(SrvRes)},
@@ -97,8 +101,16 @@ void TableStruct::InitDefaultsImpl() {
   ::lspb::protobuf_gameProto_2eproto::InitDefaults();
   _SrvRes_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
-      &_SrvRes_default_instance_);_SrvRes_default_instance_._instance.get_mutable()->srventergame_ = const_cast< ::lspb::SrvEnterGame*>(
-      ::lspb::SrvEnterGame::internal_default_instance());
+      &_SrvRes_default_instance_);_SrvRes_default_instance_._instance.get_mutable()->srventerroom_ = const_cast< ::lspb::SrvEnterRoom*>(
+      ::lspb::SrvEnterRoom::internal_default_instance());
+  _SrvRes_default_instance_._instance.get_mutable()->srvinitover_ = const_cast< ::lspb::SrvInitOver*>(
+      ::lspb::SrvInitOver::internal_default_instance());
+  _SrvRes_default_instance_._instance.get_mutable()->bgameinit_ = const_cast< ::lspb::BGameInit*>(
+      ::lspb::BGameInit::internal_default_instance());
+  _SrvRes_default_instance_._instance.get_mutable()->bgamestart_ = const_cast< ::lspb::BGameStart*>(
+      ::lspb::BGameStart::internal_default_instance());
+  _SrvRes_default_instance_._instance.get_mutable()->bgameframe_ = const_cast< ::lspb::BGameFrame*>(
+      ::lspb::BGameFrame::internal_default_instance());
 }
 
 void InitDefaults() {
@@ -110,15 +122,21 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\014srvRes.proto\022\004lspb\032\014lsEnum.proto\032\017game"
-      "Proto.proto\"\204\001\n\006SrvRes\022\"\n\010methodId\030\001 \001(\016"
+      "Proto.proto\"\237\002\n\006SrvRes\022\"\n\010methodId\030\001 \001(\016"
       "2\020.lspb.SrvMsgType\022\034\n\006result\030\002 \001(\0162\014.lsp"
-      "b.Result\022\016\n\006errStr\030\003 \001(\t\022(\n\014srvEnterGame"
-      "\030\004 \001(\0132\022.lspb.SrvEnterGame*6\n\nSrvMsgType"
-      "\022\023\n\017errorClientType\020\000\022\023\n\017serverEnterGame"
-      "\020eB\022\n\020org.bro.lssrv.pbb\006proto3"
+      "b.Result\022\016\n\006errStr\030\003 \001(\t\022(\n\014srvEnterRoom"
+      "\030e \001(\0132\022.lspb.SrvEnterRoom\022&\n\013srvInitOve"
+      "r\030f \001(\0132\021.lspb.SrvInitOver\022#\n\tbGameInit\030"
+      "\351\007 \001(\0132\017.lspb.BGameInit\022%\n\nbGameStart\030\352\007"
+      " \001(\0132\020.lspb.BGameStart\022%\n\nbGameFrame\030\353\007 "
+      "\001(\0132\020.lspb.BGameFrame*v\n\nSrvMsgType\022\023\n\017e"
+      "rrorClientType\020\000\022\020\n\014srvEnterRoom\020e\022\017\n\013sr"
+      "vInitOver\020f\022\016\n\tbGameInit\020\351\007\022\017\n\nbGameStar"
+      "t\020\352\007\022\017\n\nbGameFrame\020\353\007B\022\n\020org.bro.lssrv.p"
+      "bb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 270);
+      descriptor, 489);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "srvRes.proto", &protobuf_RegisterTypes);
   ::lspb::protobuf_lsEnum_2eproto::AddDescriptors();
@@ -147,6 +165,10 @@ bool SrvMsgType_IsValid(int value) {
   switch (value) {
     case 0:
     case 101:
+    case 102:
+    case 1001:
+    case 1002:
+    case 1003:
       return true;
     default:
       return false;
@@ -160,7 +182,11 @@ bool SrvMsgType_IsValid(int value) {
 const int SrvRes::kMethodIdFieldNumber;
 const int SrvRes::kResultFieldNumber;
 const int SrvRes::kErrStrFieldNumber;
-const int SrvRes::kSrvEnterGameFieldNumber;
+const int SrvRes::kSrvEnterRoomFieldNumber;
+const int SrvRes::kSrvInitOverFieldNumber;
+const int SrvRes::kBGameInitFieldNumber;
+const int SrvRes::kBGameStartFieldNumber;
+const int SrvRes::kBGameFrameFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 SrvRes::SrvRes()
@@ -180,10 +206,30 @@ SrvRes::SrvRes(const SrvRes& from)
   if (from.errstr().size() > 0) {
     errstr_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.errstr_);
   }
-  if (from.has_srventergame()) {
-    srventergame_ = new ::lspb::SrvEnterGame(*from.srventergame_);
+  if (from.has_srventerroom()) {
+    srventerroom_ = new ::lspb::SrvEnterRoom(*from.srventerroom_);
   } else {
-    srventergame_ = NULL;
+    srventerroom_ = NULL;
+  }
+  if (from.has_srvinitover()) {
+    srvinitover_ = new ::lspb::SrvInitOver(*from.srvinitover_);
+  } else {
+    srvinitover_ = NULL;
+  }
+  if (from.has_bgameinit()) {
+    bgameinit_ = new ::lspb::BGameInit(*from.bgameinit_);
+  } else {
+    bgameinit_ = NULL;
+  }
+  if (from.has_bgamestart()) {
+    bgamestart_ = new ::lspb::BGameStart(*from.bgamestart_);
+  } else {
+    bgamestart_ = NULL;
+  }
+  if (from.has_bgameframe()) {
+    bgameframe_ = new ::lspb::BGameFrame(*from.bgameframe_);
+  } else {
+    bgameframe_ = NULL;
   }
   ::memcpy(&methodid_, &from.methodid_,
     static_cast<size_t>(reinterpret_cast<char*>(&result_) -
@@ -193,9 +239,9 @@ SrvRes::SrvRes(const SrvRes& from)
 
 void SrvRes::SharedCtor() {
   errstr_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&srventergame_, 0, static_cast<size_t>(
+  ::memset(&srventerroom_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&result_) -
-      reinterpret_cast<char*>(&srventergame_)) + sizeof(result_));
+      reinterpret_cast<char*>(&srventerroom_)) + sizeof(result_));
   _cached_size_ = 0;
 }
 
@@ -206,7 +252,11 @@ SrvRes::~SrvRes() {
 
 void SrvRes::SharedDtor() {
   errstr_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (this != internal_default_instance()) delete srventergame_;
+  if (this != internal_default_instance()) delete srventerroom_;
+  if (this != internal_default_instance()) delete srvinitover_;
+  if (this != internal_default_instance()) delete bgameinit_;
+  if (this != internal_default_instance()) delete bgamestart_;
+  if (this != internal_default_instance()) delete bgameframe_;
 }
 
 void SrvRes::SetCachedSize(int size) const {
@@ -239,10 +289,26 @@ void SrvRes::Clear() {
   (void) cached_has_bits;
 
   errstr_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (GetArenaNoVirtual() == NULL && srventergame_ != NULL) {
-    delete srventergame_;
+  if (GetArenaNoVirtual() == NULL && srventerroom_ != NULL) {
+    delete srventerroom_;
   }
-  srventergame_ = NULL;
+  srventerroom_ = NULL;
+  if (GetArenaNoVirtual() == NULL && srvinitover_ != NULL) {
+    delete srvinitover_;
+  }
+  srvinitover_ = NULL;
+  if (GetArenaNoVirtual() == NULL && bgameinit_ != NULL) {
+    delete bgameinit_;
+  }
+  bgameinit_ = NULL;
+  if (GetArenaNoVirtual() == NULL && bgamestart_ != NULL) {
+    delete bgamestart_;
+  }
+  bgamestart_ = NULL;
+  if (GetArenaNoVirtual() == NULL && bgameframe_ != NULL) {
+    delete bgameframe_;
+  }
+  bgameframe_ = NULL;
   ::memset(&methodid_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&result_) -
       reinterpret_cast<char*>(&methodid_)) + sizeof(result_));
@@ -255,7 +321,7 @@ bool SrvRes::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:lspb.SrvRes)
   for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(16383u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
@@ -305,12 +371,60 @@ bool SrvRes::MergePartialFromCodedStream(
         break;
       }
 
-      // .lspb.SrvEnterGame srvEnterGame = 4;
-      case 4: {
+      // .lspb.SrvEnterRoom srvEnterRoom = 101;
+      case 101: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(42u /* 810 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_srventergame()));
+               input, mutable_srventerroom()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .lspb.SrvInitOver srvInitOver = 102;
+      case 102: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(50u /* 818 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_srvinitover()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .lspb.BGameInit bGameInit = 1001;
+      case 1001: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(74u /* 8010 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_bgameinit()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .lspb.BGameStart bGameStart = 1002;
+      case 1002: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(82u /* 8018 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_bgamestart()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .lspb.BGameFrame bGameFrame = 1003;
+      case 1003: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(90u /* 8026 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_bgameframe()));
         } else {
           goto handle_unusual;
         }
@@ -365,10 +479,34 @@ void SrvRes::SerializeWithCachedSizes(
       3, this->errstr(), output);
   }
 
-  // .lspb.SrvEnterGame srvEnterGame = 4;
-  if (this->has_srventergame()) {
+  // .lspb.SrvEnterRoom srvEnterRoom = 101;
+  if (this->has_srventerroom()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, *this->srventergame_, output);
+      101, *this->srventerroom_, output);
+  }
+
+  // .lspb.SrvInitOver srvInitOver = 102;
+  if (this->has_srvinitover()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      102, *this->srvinitover_, output);
+  }
+
+  // .lspb.BGameInit bGameInit = 1001;
+  if (this->has_bgameinit()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1001, *this->bgameinit_, output);
+  }
+
+  // .lspb.BGameStart bGameStart = 1002;
+  if (this->has_bgamestart()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1002, *this->bgamestart_, output);
+  }
+
+  // .lspb.BGameFrame bGameFrame = 1003;
+  if (this->has_bgameframe()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1003, *this->bgameframe_, output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -408,11 +546,39 @@ void SrvRes::SerializeWithCachedSizes(
         3, this->errstr(), target);
   }
 
-  // .lspb.SrvEnterGame srvEnterGame = 4;
-  if (this->has_srventergame()) {
+  // .lspb.SrvEnterRoom srvEnterRoom = 101;
+  if (this->has_srventerroom()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        4, *this->srventergame_, deterministic, target);
+        101, *this->srventerroom_, deterministic, target);
+  }
+
+  // .lspb.SrvInitOver srvInitOver = 102;
+  if (this->has_srvinitover()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        102, *this->srvinitover_, deterministic, target);
+  }
+
+  // .lspb.BGameInit bGameInit = 1001;
+  if (this->has_bgameinit()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1001, *this->bgameinit_, deterministic, target);
+  }
+
+  // .lspb.BGameStart bGameStart = 1002;
+  if (this->has_bgamestart()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1002, *this->bgamestart_, deterministic, target);
+  }
+
+  // .lspb.BGameFrame bGameFrame = 1003;
+  if (this->has_bgameframe()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1003, *this->bgameframe_, deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -439,11 +605,39 @@ size_t SrvRes::ByteSizeLong() const {
         this->errstr());
   }
 
-  // .lspb.SrvEnterGame srvEnterGame = 4;
-  if (this->has_srventergame()) {
-    total_size += 1 +
+  // .lspb.SrvEnterRoom srvEnterRoom = 101;
+  if (this->has_srventerroom()) {
+    total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->srventergame_);
+        *this->srventerroom_);
+  }
+
+  // .lspb.SrvInitOver srvInitOver = 102;
+  if (this->has_srvinitover()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->srvinitover_);
+  }
+
+  // .lspb.BGameInit bGameInit = 1001;
+  if (this->has_bgameinit()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->bgameinit_);
+  }
+
+  // .lspb.BGameStart bGameStart = 1002;
+  if (this->has_bgamestart()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->bgamestart_);
+  }
+
+  // .lspb.BGameFrame bGameFrame = 1003;
+  if (this->has_bgameframe()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->bgameframe_);
   }
 
   // .lspb.SrvMsgType methodId = 1;
@@ -491,8 +685,20 @@ void SrvRes::MergeFrom(const SrvRes& from) {
 
     errstr_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.errstr_);
   }
-  if (from.has_srventergame()) {
-    mutable_srventergame()->::lspb::SrvEnterGame::MergeFrom(from.srventergame());
+  if (from.has_srventerroom()) {
+    mutable_srventerroom()->::lspb::SrvEnterRoom::MergeFrom(from.srventerroom());
+  }
+  if (from.has_srvinitover()) {
+    mutable_srvinitover()->::lspb::SrvInitOver::MergeFrom(from.srvinitover());
+  }
+  if (from.has_bgameinit()) {
+    mutable_bgameinit()->::lspb::BGameInit::MergeFrom(from.bgameinit());
+  }
+  if (from.has_bgamestart()) {
+    mutable_bgamestart()->::lspb::BGameStart::MergeFrom(from.bgamestart());
+  }
+  if (from.has_bgameframe()) {
+    mutable_bgameframe()->::lspb::BGameFrame::MergeFrom(from.bgameframe());
   }
   if (from.methodid() != 0) {
     set_methodid(from.methodid());
@@ -527,7 +733,11 @@ void SrvRes::Swap(SrvRes* other) {
 void SrvRes::InternalSwap(SrvRes* other) {
   using std::swap;
   errstr_.Swap(&other->errstr_);
-  swap(srventergame_, other->srventergame_);
+  swap(srventerroom_, other->srventerroom_);
+  swap(srvinitover_, other->srvinitover_);
+  swap(bgameinit_, other->bgameinit_);
+  swap(bgamestart_, other->bgamestart_);
+  swap(bgameframe_, other->bgameframe_);
   swap(methodid_, other->methodid_);
   swap(result_, other->result_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -623,44 +833,204 @@ void SrvRes::set_allocated_errstr(::std::string* errstr) {
   // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.errStr)
 }
 
-// .lspb.SrvEnterGame srvEnterGame = 4;
-bool SrvRes::has_srventergame() const {
-  return this != internal_default_instance() && srventergame_ != NULL;
+// .lspb.SrvEnterRoom srvEnterRoom = 101;
+bool SrvRes::has_srventerroom() const {
+  return this != internal_default_instance() && srventerroom_ != NULL;
 }
-void SrvRes::clear_srventergame() {
-  if (GetArenaNoVirtual() == NULL && srventergame_ != NULL) delete srventergame_;
-  srventergame_ = NULL;
+void SrvRes::clear_srventerroom() {
+  if (GetArenaNoVirtual() == NULL && srventerroom_ != NULL) delete srventerroom_;
+  srventerroom_ = NULL;
 }
-const ::lspb::SrvEnterGame& SrvRes::srventergame() const {
-  const ::lspb::SrvEnterGame* p = srventergame_;
-  // @@protoc_insertion_point(field_get:lspb.SrvRes.srvEnterGame)
-  return p != NULL ? *p : *reinterpret_cast<const ::lspb::SrvEnterGame*>(
-      &::lspb::_SrvEnterGame_default_instance_);
+const ::lspb::SrvEnterRoom& SrvRes::srventerroom() const {
+  const ::lspb::SrvEnterRoom* p = srventerroom_;
+  // @@protoc_insertion_point(field_get:lspb.SrvRes.srvEnterRoom)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::SrvEnterRoom*>(
+      &::lspb::_SrvEnterRoom_default_instance_);
 }
-::lspb::SrvEnterGame* SrvRes::mutable_srventergame() {
+::lspb::SrvEnterRoom* SrvRes::mutable_srventerroom() {
   
-  if (srventergame_ == NULL) {
-    srventergame_ = new ::lspb::SrvEnterGame;
+  if (srventerroom_ == NULL) {
+    srventerroom_ = new ::lspb::SrvEnterRoom;
   }
-  // @@protoc_insertion_point(field_mutable:lspb.SrvRes.srvEnterGame)
-  return srventergame_;
+  // @@protoc_insertion_point(field_mutable:lspb.SrvRes.srvEnterRoom)
+  return srventerroom_;
 }
-::lspb::SrvEnterGame* SrvRes::release_srventergame() {
-  // @@protoc_insertion_point(field_release:lspb.SrvRes.srvEnterGame)
+::lspb::SrvEnterRoom* SrvRes::release_srventerroom() {
+  // @@protoc_insertion_point(field_release:lspb.SrvRes.srvEnterRoom)
   
-  ::lspb::SrvEnterGame* temp = srventergame_;
-  srventergame_ = NULL;
+  ::lspb::SrvEnterRoom* temp = srventerroom_;
+  srventerroom_ = NULL;
   return temp;
 }
-void SrvRes::set_allocated_srventergame(::lspb::SrvEnterGame* srventergame) {
-  delete srventergame_;
-  srventergame_ = srventergame;
-  if (srventergame) {
+void SrvRes::set_allocated_srventerroom(::lspb::SrvEnterRoom* srventerroom) {
+  delete srventerroom_;
+  srventerroom_ = srventerroom;
+  if (srventerroom) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.srvEnterGame)
+  // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.srvEnterRoom)
+}
+
+// .lspb.SrvInitOver srvInitOver = 102;
+bool SrvRes::has_srvinitover() const {
+  return this != internal_default_instance() && srvinitover_ != NULL;
+}
+void SrvRes::clear_srvinitover() {
+  if (GetArenaNoVirtual() == NULL && srvinitover_ != NULL) delete srvinitover_;
+  srvinitover_ = NULL;
+}
+const ::lspb::SrvInitOver& SrvRes::srvinitover() const {
+  const ::lspb::SrvInitOver* p = srvinitover_;
+  // @@protoc_insertion_point(field_get:lspb.SrvRes.srvInitOver)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::SrvInitOver*>(
+      &::lspb::_SrvInitOver_default_instance_);
+}
+::lspb::SrvInitOver* SrvRes::mutable_srvinitover() {
+  
+  if (srvinitover_ == NULL) {
+    srvinitover_ = new ::lspb::SrvInitOver;
+  }
+  // @@protoc_insertion_point(field_mutable:lspb.SrvRes.srvInitOver)
+  return srvinitover_;
+}
+::lspb::SrvInitOver* SrvRes::release_srvinitover() {
+  // @@protoc_insertion_point(field_release:lspb.SrvRes.srvInitOver)
+  
+  ::lspb::SrvInitOver* temp = srvinitover_;
+  srvinitover_ = NULL;
+  return temp;
+}
+void SrvRes::set_allocated_srvinitover(::lspb::SrvInitOver* srvinitover) {
+  delete srvinitover_;
+  srvinitover_ = srvinitover;
+  if (srvinitover) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.srvInitOver)
+}
+
+// .lspb.BGameInit bGameInit = 1001;
+bool SrvRes::has_bgameinit() const {
+  return this != internal_default_instance() && bgameinit_ != NULL;
+}
+void SrvRes::clear_bgameinit() {
+  if (GetArenaNoVirtual() == NULL && bgameinit_ != NULL) delete bgameinit_;
+  bgameinit_ = NULL;
+}
+const ::lspb::BGameInit& SrvRes::bgameinit() const {
+  const ::lspb::BGameInit* p = bgameinit_;
+  // @@protoc_insertion_point(field_get:lspb.SrvRes.bGameInit)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::BGameInit*>(
+      &::lspb::_BGameInit_default_instance_);
+}
+::lspb::BGameInit* SrvRes::mutable_bgameinit() {
+  
+  if (bgameinit_ == NULL) {
+    bgameinit_ = new ::lspb::BGameInit;
+  }
+  // @@protoc_insertion_point(field_mutable:lspb.SrvRes.bGameInit)
+  return bgameinit_;
+}
+::lspb::BGameInit* SrvRes::release_bgameinit() {
+  // @@protoc_insertion_point(field_release:lspb.SrvRes.bGameInit)
+  
+  ::lspb::BGameInit* temp = bgameinit_;
+  bgameinit_ = NULL;
+  return temp;
+}
+void SrvRes::set_allocated_bgameinit(::lspb::BGameInit* bgameinit) {
+  delete bgameinit_;
+  bgameinit_ = bgameinit;
+  if (bgameinit) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.bGameInit)
+}
+
+// .lspb.BGameStart bGameStart = 1002;
+bool SrvRes::has_bgamestart() const {
+  return this != internal_default_instance() && bgamestart_ != NULL;
+}
+void SrvRes::clear_bgamestart() {
+  if (GetArenaNoVirtual() == NULL && bgamestart_ != NULL) delete bgamestart_;
+  bgamestart_ = NULL;
+}
+const ::lspb::BGameStart& SrvRes::bgamestart() const {
+  const ::lspb::BGameStart* p = bgamestart_;
+  // @@protoc_insertion_point(field_get:lspb.SrvRes.bGameStart)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::BGameStart*>(
+      &::lspb::_BGameStart_default_instance_);
+}
+::lspb::BGameStart* SrvRes::mutable_bgamestart() {
+  
+  if (bgamestart_ == NULL) {
+    bgamestart_ = new ::lspb::BGameStart;
+  }
+  // @@protoc_insertion_point(field_mutable:lspb.SrvRes.bGameStart)
+  return bgamestart_;
+}
+::lspb::BGameStart* SrvRes::release_bgamestart() {
+  // @@protoc_insertion_point(field_release:lspb.SrvRes.bGameStart)
+  
+  ::lspb::BGameStart* temp = bgamestart_;
+  bgamestart_ = NULL;
+  return temp;
+}
+void SrvRes::set_allocated_bgamestart(::lspb::BGameStart* bgamestart) {
+  delete bgamestart_;
+  bgamestart_ = bgamestart;
+  if (bgamestart) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.bGameStart)
+}
+
+// .lspb.BGameFrame bGameFrame = 1003;
+bool SrvRes::has_bgameframe() const {
+  return this != internal_default_instance() && bgameframe_ != NULL;
+}
+void SrvRes::clear_bgameframe() {
+  if (GetArenaNoVirtual() == NULL && bgameframe_ != NULL) delete bgameframe_;
+  bgameframe_ = NULL;
+}
+const ::lspb::BGameFrame& SrvRes::bgameframe() const {
+  const ::lspb::BGameFrame* p = bgameframe_;
+  // @@protoc_insertion_point(field_get:lspb.SrvRes.bGameFrame)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::BGameFrame*>(
+      &::lspb::_BGameFrame_default_instance_);
+}
+::lspb::BGameFrame* SrvRes::mutable_bgameframe() {
+  
+  if (bgameframe_ == NULL) {
+    bgameframe_ = new ::lspb::BGameFrame;
+  }
+  // @@protoc_insertion_point(field_mutable:lspb.SrvRes.bGameFrame)
+  return bgameframe_;
+}
+::lspb::BGameFrame* SrvRes::release_bgameframe() {
+  // @@protoc_insertion_point(field_release:lspb.SrvRes.bGameFrame)
+  
+  ::lspb::BGameFrame* temp = bgameframe_;
+  bgameframe_ = NULL;
+  return temp;
+}
+void SrvRes::set_allocated_bgameframe(::lspb::BGameFrame* bgameframe) {
+  delete bgameframe_;
+  bgameframe_ = bgameframe;
+  if (bgameframe) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:lspb.SrvRes.bGameFrame)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

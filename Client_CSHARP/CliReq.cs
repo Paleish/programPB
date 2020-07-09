@@ -23,16 +23,18 @@ namespace Lspb {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgxjbGlSZXEucHJvdG8SBGxzcGIaDGxzRW51bS5wcm90bxoPZ2FtZVByb3Rv",
-            "LnByb3RvIosBCgZDbGlSZXESDgoGdXNlcklkGAEgASgFEiAKCG1vZHVsZUlk",
+            "LnByb3RvItkBCgZDbGlSZXESDgoGdXNlcklkGAEgASgFEiAKCG1vZHVsZUlk",
             "GAIgASgOMg4ubHNwYi5Nb2R1bGVJZBIlCghtZXRob2RJZBgDIAEoDjITLmxz",
-            "cGIuQ2xpZW50TXNnVHlwZRIoCgxjbGlFbnRlckdhbWUYBCABKAsyEi5sc3Bi",
-            "LkNsaUVudGVyR2FtZSo2Cg1DbGllbnRNc2dUeXBlEhMKD2Vycm9yQ2xpZW50",
-            "VHlwZRAAEhAKDGNsaUVudGVyR2FtZRBlQhIKEG9yZy5icm8ubHNzcnYucGJi",
-            "BnByb3RvMw=="));
+            "cGIuQ2xpZW50TXNnVHlwZRIoCgxjbGlFbnRlclJvb20YZSABKAsyEi5sc3Bi",
+            "LkNsaUVudGVyUm9vbRImCgtjbGlJbml0T3ZlchhmIAEoCzIRLmxzcGIuQ2xp",
+            "SW5pdE92ZXISJAoKY2xpT3BlcmF0ZRhnIAEoCzIQLmxzcGIuQ2xpT3BlcmF0",
+            "ZSpXCg1DbGllbnRNc2dUeXBlEhMKD2Vycm9yQ2xpZW50VHlwZRAAEhAKDGNs",
+            "aUVudGVyUm9vbRBlEg8KC2NsaUluaXRPdmVyEGYSDgoKY2xpT3BlcmF0ZRBn",
+            "QhIKEG9yZy5icm8ubHNzcnYucGJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Lspb.LsEnumReflection.Descriptor, global::Lspb.GameProtoReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Lspb.ClientMsgType), }, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Lspb.CliReq), global::Lspb.CliReq.Parser, new[]{ "UserId", "ModuleId", "MethodId", "CliEnterGame" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Lspb.CliReq), global::Lspb.CliReq.Parser, new[]{ "UserId", "ModuleId", "MethodId", "CliEnterRoom", "CliInitOver", "CliOperate" }, null, null, null)
           }));
     }
     #endregion
@@ -47,7 +49,15 @@ namespace Lspb {
     /// <summary>
     ///* 进入游戏 
     /// </summary>
-    [pbr::OriginalName("cliEnterGame")] CliEnterGame = 101,
+    [pbr::OriginalName("cliEnterRoom")] CliEnterRoom = 101,
+    /// <summary>
+    ///* 通知服务器初始化完成 
+    /// </summary>
+    [pbr::OriginalName("cliInitOver")] CliInitOver = 102,
+    /// <summary>
+    ///* 客户端对坦克的具体操作 
+    /// </summary>
+    [pbr::OriginalName("cliOperate")] CliOperate = 103,
   }
 
   #endregion
@@ -83,7 +93,9 @@ namespace Lspb {
       userId_ = other.userId_;
       moduleId_ = other.moduleId_;
       methodId_ = other.methodId_;
-      CliEnterGame = other.cliEnterGame_ != null ? other.CliEnterGame.Clone() : null;
+      CliEnterRoom = other.cliEnterRoom_ != null ? other.CliEnterRoom.Clone() : null;
+      CliInitOver = other.cliInitOver_ != null ? other.CliInitOver.Clone() : null;
+      CliOperate = other.cliOperate_ != null ? other.CliOperate.Clone() : null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -133,17 +145,45 @@ namespace Lspb {
       }
     }
 
-    /// <summary>Field number for the "cliEnterGame" field.</summary>
-    public const int CliEnterGameFieldNumber = 4;
-    private global::Lspb.CliEnterGame cliEnterGame_;
+    /// <summary>Field number for the "cliEnterRoom" field.</summary>
+    public const int CliEnterRoomFieldNumber = 101;
+    private global::Lspb.CliEnterRoom cliEnterRoom_;
     /// <summary>
-    ///* 具体请求内容proto 
+    ///* 进入房间 
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Lspb.CliEnterGame CliEnterGame {
-      get { return cliEnterGame_; }
+    public global::Lspb.CliEnterRoom CliEnterRoom {
+      get { return cliEnterRoom_; }
       set {
-        cliEnterGame_ = value;
+        cliEnterRoom_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "cliInitOver" field.</summary>
+    public const int CliInitOverFieldNumber = 102;
+    private global::Lspb.CliInitOver cliInitOver_;
+    /// <summary>
+    ///* 客户端初始化完成 
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Lspb.CliInitOver CliInitOver {
+      get { return cliInitOver_; }
+      set {
+        cliInitOver_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "cliOperate" field.</summary>
+    public const int CliOperateFieldNumber = 103;
+    private global::Lspb.CliOperate cliOperate_;
+    /// <summary>
+    ///* 客户端对坦克的具体操作 
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Lspb.CliOperate CliOperate {
+      get { return cliOperate_; }
+      set {
+        cliOperate_ = value;
       }
     }
 
@@ -163,7 +203,9 @@ namespace Lspb {
       if (UserId != other.UserId) return false;
       if (ModuleId != other.ModuleId) return false;
       if (MethodId != other.MethodId) return false;
-      if (!object.Equals(CliEnterGame, other.CliEnterGame)) return false;
+      if (!object.Equals(CliEnterRoom, other.CliEnterRoom)) return false;
+      if (!object.Equals(CliInitOver, other.CliInitOver)) return false;
+      if (!object.Equals(CliOperate, other.CliOperate)) return false;
       return true;
     }
 
@@ -173,7 +215,9 @@ namespace Lspb {
       if (UserId != 0) hash ^= UserId.GetHashCode();
       if (ModuleId != 0) hash ^= ModuleId.GetHashCode();
       if (MethodId != 0) hash ^= MethodId.GetHashCode();
-      if (cliEnterGame_ != null) hash ^= CliEnterGame.GetHashCode();
+      if (cliEnterRoom_ != null) hash ^= CliEnterRoom.GetHashCode();
+      if (cliInitOver_ != null) hash ^= CliInitOver.GetHashCode();
+      if (cliOperate_ != null) hash ^= CliOperate.GetHashCode();
       return hash;
     }
 
@@ -196,9 +240,17 @@ namespace Lspb {
         output.WriteRawTag(24);
         output.WriteEnum((int) MethodId);
       }
-      if (cliEnterGame_ != null) {
-        output.WriteRawTag(34);
-        output.WriteMessage(CliEnterGame);
+      if (cliEnterRoom_ != null) {
+        output.WriteRawTag(170, 6);
+        output.WriteMessage(CliEnterRoom);
+      }
+      if (cliInitOver_ != null) {
+        output.WriteRawTag(178, 6);
+        output.WriteMessage(CliInitOver);
+      }
+      if (cliOperate_ != null) {
+        output.WriteRawTag(186, 6);
+        output.WriteMessage(CliOperate);
       }
     }
 
@@ -214,8 +266,14 @@ namespace Lspb {
       if (MethodId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) MethodId);
       }
-      if (cliEnterGame_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(CliEnterGame);
+      if (cliEnterRoom_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(CliEnterRoom);
+      }
+      if (cliInitOver_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(CliInitOver);
+      }
+      if (cliOperate_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(CliOperate);
       }
       return size;
     }
@@ -234,11 +292,23 @@ namespace Lspb {
       if (other.MethodId != 0) {
         MethodId = other.MethodId;
       }
-      if (other.cliEnterGame_ != null) {
-        if (cliEnterGame_ == null) {
-          cliEnterGame_ = new global::Lspb.CliEnterGame();
+      if (other.cliEnterRoom_ != null) {
+        if (cliEnterRoom_ == null) {
+          cliEnterRoom_ = new global::Lspb.CliEnterRoom();
         }
-        CliEnterGame.MergeFrom(other.CliEnterGame);
+        CliEnterRoom.MergeFrom(other.CliEnterRoom);
+      }
+      if (other.cliInitOver_ != null) {
+        if (cliInitOver_ == null) {
+          cliInitOver_ = new global::Lspb.CliInitOver();
+        }
+        CliInitOver.MergeFrom(other.CliInitOver);
+      }
+      if (other.cliOperate_ != null) {
+        if (cliOperate_ == null) {
+          cliOperate_ = new global::Lspb.CliOperate();
+        }
+        CliOperate.MergeFrom(other.CliOperate);
       }
     }
 
@@ -262,11 +332,25 @@ namespace Lspb {
             methodId_ = (global::Lspb.ClientMsgType) input.ReadEnum();
             break;
           }
-          case 34: {
-            if (cliEnterGame_ == null) {
-              cliEnterGame_ = new global::Lspb.CliEnterGame();
+          case 810: {
+            if (cliEnterRoom_ == null) {
+              cliEnterRoom_ = new global::Lspb.CliEnterRoom();
             }
-            input.ReadMessage(cliEnterGame_);
+            input.ReadMessage(cliEnterRoom_);
+            break;
+          }
+          case 818: {
+            if (cliInitOver_ == null) {
+              cliInitOver_ = new global::Lspb.CliInitOver();
+            }
+            input.ReadMessage(cliInitOver_);
+            break;
+          }
+          case 826: {
+            if (cliOperate_ == null) {
+              cliOperate_ = new global::Lspb.CliOperate();
+            }
+            input.ReadMessage(cliOperate_);
             break;
           }
         }

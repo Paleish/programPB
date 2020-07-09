@@ -23,15 +23,20 @@ namespace Lspb {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgxzcnZSZXMucHJvdG8SBGxzcGIaDGxzRW51bS5wcm90bxoPZ2FtZVByb3Rv",
-            "LnByb3RvIoQBCgZTcnZSZXMSIgoIbWV0aG9kSWQYASABKA4yEC5sc3BiLlNy",
+            "LnByb3RvIp8CCgZTcnZSZXMSIgoIbWV0aG9kSWQYASABKA4yEC5sc3BiLlNy",
             "dk1zZ1R5cGUSHAoGcmVzdWx0GAIgASgOMgwubHNwYi5SZXN1bHQSDgoGZXJy",
-            "U3RyGAMgASgJEigKDHNydkVudGVyR2FtZRgEIAEoCzISLmxzcGIuU3J2RW50",
-            "ZXJHYW1lKjYKClNydk1zZ1R5cGUSEwoPZXJyb3JDbGllbnRUeXBlEAASEwoP",
-            "c2VydmVyRW50ZXJHYW1lEGVCEgoQb3JnLmJyby5sc3Nydi5wYmIGcHJvdG8z"));
+            "U3RyGAMgASgJEigKDHNydkVudGVyUm9vbRhlIAEoCzISLmxzcGIuU3J2RW50",
+            "ZXJSb29tEiYKC3NydkluaXRPdmVyGGYgASgLMhEubHNwYi5TcnZJbml0T3Zl",
+            "chIjCgliR2FtZUluaXQY6QcgASgLMg8ubHNwYi5CR2FtZUluaXQSJQoKYkdh",
+            "bWVTdGFydBjqByABKAsyEC5sc3BiLkJHYW1lU3RhcnQSJQoKYkdhbWVGcmFt",
+            "ZRjrByABKAsyEC5sc3BiLkJHYW1lRnJhbWUqdgoKU3J2TXNnVHlwZRITCg9l",
+            "cnJvckNsaWVudFR5cGUQABIQCgxzcnZFbnRlclJvb20QZRIPCgtzcnZJbml0",
+            "T3ZlchBmEg4KCWJHYW1lSW5pdBDpBxIPCgpiR2FtZVN0YXJ0EOoHEg8KCmJH",
+            "YW1lRnJhbWUQ6wdCEgoQb3JnLmJyby5sc3Nydi5wYmIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Lspb.LsEnumReflection.Descriptor, global::Lspb.GameProtoReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Lspb.SrvMsgType), }, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Lspb.SrvRes), global::Lspb.SrvRes.Parser, new[]{ "MethodId", "Result", "ErrStr", "SrvEnterGame" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Lspb.SrvRes), global::Lspb.SrvRes.Parser, new[]{ "MethodId", "Result", "ErrStr", "SrvEnterRoom", "SrvInitOver", "BGameInit", "BGameStart", "BGameFrame" }, null, null, null)
           }));
     }
     #endregion
@@ -46,7 +51,23 @@ namespace Lspb {
     /// <summary>
     ///* 进入游戏 
     /// </summary>
-    [pbr::OriginalName("serverEnterGame")] ServerEnterGame = 101,
+    [pbr::OriginalName("srvEnterRoom")] SrvEnterRoom = 101,
+    /// <summary>
+    ///* 初始化完成ACK 
+    /// </summary>
+    [pbr::OriginalName("srvInitOver")] SrvInitOver = 102,
+    /// <summary>
+    ///* 房间初始化 
+    /// </summary>
+    [pbr::OriginalName("bGameInit")] BGameInit = 1001,
+    /// <summary>
+    ///* 游戏正式开始推送 
+    /// </summary>
+    [pbr::OriginalName("bGameStart")] BGameStart = 1002,
+    /// <summary>
+    ///* 游戏逻辑帧操作 
+    /// </summary>
+    [pbr::OriginalName("bGameFrame")] BGameFrame = 1003,
   }
 
   #endregion
@@ -82,7 +103,11 @@ namespace Lspb {
       methodId_ = other.methodId_;
       result_ = other.result_;
       errStr_ = other.errStr_;
-      SrvEnterGame = other.srvEnterGame_ != null ? other.SrvEnterGame.Clone() : null;
+      SrvEnterRoom = other.srvEnterRoom_ != null ? other.SrvEnterRoom.Clone() : null;
+      SrvInitOver = other.srvInitOver_ != null ? other.SrvInitOver.Clone() : null;
+      BGameInit = other.bGameInit_ != null ? other.BGameInit.Clone() : null;
+      BGameStart = other.bGameStart_ != null ? other.BGameStart.Clone() : null;
+      BGameFrame = other.bGameFrame_ != null ? other.BGameFrame.Clone() : null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -132,17 +157,73 @@ namespace Lspb {
       }
     }
 
-    /// <summary>Field number for the "srvEnterGame" field.</summary>
-    public const int SrvEnterGameFieldNumber = 4;
-    private global::Lspb.SrvEnterGame srvEnterGame_;
+    /// <summary>Field number for the "srvEnterRoom" field.</summary>
+    public const int SrvEnterRoomFieldNumber = 101;
+    private global::Lspb.SrvEnterRoom srvEnterRoom_;
     /// <summary>
-    ///* 具体返回内容proto 
+    ///* 玩家进入房间 
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Lspb.SrvEnterGame SrvEnterGame {
-      get { return srvEnterGame_; }
+    public global::Lspb.SrvEnterRoom SrvEnterRoom {
+      get { return srvEnterRoom_; }
       set {
-        srvEnterGame_ = value;
+        srvEnterRoom_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "srvInitOver" field.</summary>
+    public const int SrvInitOverFieldNumber = 102;
+    private global::Lspb.SrvInitOver srvInitOver_;
+    /// <summary>
+    ///* 初始化完成ACK 
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Lspb.SrvInitOver SrvInitOver {
+      get { return srvInitOver_; }
+      set {
+        srvInitOver_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "bGameInit" field.</summary>
+    public const int BGameInitFieldNumber = 1001;
+    private global::Lspb.BGameInit bGameInit_;
+    /// <summary>
+    ///* 游戏初始化信息 
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Lspb.BGameInit BGameInit {
+      get { return bGameInit_; }
+      set {
+        bGameInit_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "bGameStart" field.</summary>
+    public const int BGameStartFieldNumber = 1002;
+    private global::Lspb.BGameStart bGameStart_;
+    /// <summary>
+    ///* 游戏正式开始推送 
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Lspb.BGameStart BGameStart {
+      get { return bGameStart_; }
+      set {
+        bGameStart_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "bGameFrame" field.</summary>
+    public const int BGameFrameFieldNumber = 1003;
+    private global::Lspb.BGameFrame bGameFrame_;
+    /// <summary>
+    ///* 游戏逻辑帧操作 
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Lspb.BGameFrame BGameFrame {
+      get { return bGameFrame_; }
+      set {
+        bGameFrame_ = value;
       }
     }
 
@@ -162,7 +243,11 @@ namespace Lspb {
       if (MethodId != other.MethodId) return false;
       if (Result != other.Result) return false;
       if (ErrStr != other.ErrStr) return false;
-      if (!object.Equals(SrvEnterGame, other.SrvEnterGame)) return false;
+      if (!object.Equals(SrvEnterRoom, other.SrvEnterRoom)) return false;
+      if (!object.Equals(SrvInitOver, other.SrvInitOver)) return false;
+      if (!object.Equals(BGameInit, other.BGameInit)) return false;
+      if (!object.Equals(BGameStart, other.BGameStart)) return false;
+      if (!object.Equals(BGameFrame, other.BGameFrame)) return false;
       return true;
     }
 
@@ -172,7 +257,11 @@ namespace Lspb {
       if (MethodId != 0) hash ^= MethodId.GetHashCode();
       if (Result != 0) hash ^= Result.GetHashCode();
       if (ErrStr.Length != 0) hash ^= ErrStr.GetHashCode();
-      if (srvEnterGame_ != null) hash ^= SrvEnterGame.GetHashCode();
+      if (srvEnterRoom_ != null) hash ^= SrvEnterRoom.GetHashCode();
+      if (srvInitOver_ != null) hash ^= SrvInitOver.GetHashCode();
+      if (bGameInit_ != null) hash ^= BGameInit.GetHashCode();
+      if (bGameStart_ != null) hash ^= BGameStart.GetHashCode();
+      if (bGameFrame_ != null) hash ^= BGameFrame.GetHashCode();
       return hash;
     }
 
@@ -195,9 +284,25 @@ namespace Lspb {
         output.WriteRawTag(26);
         output.WriteString(ErrStr);
       }
-      if (srvEnterGame_ != null) {
-        output.WriteRawTag(34);
-        output.WriteMessage(SrvEnterGame);
+      if (srvEnterRoom_ != null) {
+        output.WriteRawTag(170, 6);
+        output.WriteMessage(SrvEnterRoom);
+      }
+      if (srvInitOver_ != null) {
+        output.WriteRawTag(178, 6);
+        output.WriteMessage(SrvInitOver);
+      }
+      if (bGameInit_ != null) {
+        output.WriteRawTag(202, 62);
+        output.WriteMessage(BGameInit);
+      }
+      if (bGameStart_ != null) {
+        output.WriteRawTag(210, 62);
+        output.WriteMessage(BGameStart);
+      }
+      if (bGameFrame_ != null) {
+        output.WriteRawTag(218, 62);
+        output.WriteMessage(BGameFrame);
       }
     }
 
@@ -213,8 +318,20 @@ namespace Lspb {
       if (ErrStr.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ErrStr);
       }
-      if (srvEnterGame_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SrvEnterGame);
+      if (srvEnterRoom_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(SrvEnterRoom);
+      }
+      if (srvInitOver_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(SrvInitOver);
+      }
+      if (bGameInit_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(BGameInit);
+      }
+      if (bGameStart_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(BGameStart);
+      }
+      if (bGameFrame_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(BGameFrame);
       }
       return size;
     }
@@ -233,11 +350,35 @@ namespace Lspb {
       if (other.ErrStr.Length != 0) {
         ErrStr = other.ErrStr;
       }
-      if (other.srvEnterGame_ != null) {
-        if (srvEnterGame_ == null) {
-          srvEnterGame_ = new global::Lspb.SrvEnterGame();
+      if (other.srvEnterRoom_ != null) {
+        if (srvEnterRoom_ == null) {
+          srvEnterRoom_ = new global::Lspb.SrvEnterRoom();
         }
-        SrvEnterGame.MergeFrom(other.SrvEnterGame);
+        SrvEnterRoom.MergeFrom(other.SrvEnterRoom);
+      }
+      if (other.srvInitOver_ != null) {
+        if (srvInitOver_ == null) {
+          srvInitOver_ = new global::Lspb.SrvInitOver();
+        }
+        SrvInitOver.MergeFrom(other.SrvInitOver);
+      }
+      if (other.bGameInit_ != null) {
+        if (bGameInit_ == null) {
+          bGameInit_ = new global::Lspb.BGameInit();
+        }
+        BGameInit.MergeFrom(other.BGameInit);
+      }
+      if (other.bGameStart_ != null) {
+        if (bGameStart_ == null) {
+          bGameStart_ = new global::Lspb.BGameStart();
+        }
+        BGameStart.MergeFrom(other.BGameStart);
+      }
+      if (other.bGameFrame_ != null) {
+        if (bGameFrame_ == null) {
+          bGameFrame_ = new global::Lspb.BGameFrame();
+        }
+        BGameFrame.MergeFrom(other.BGameFrame);
       }
     }
 
@@ -261,11 +402,39 @@ namespace Lspb {
             ErrStr = input.ReadString();
             break;
           }
-          case 34: {
-            if (srvEnterGame_ == null) {
-              srvEnterGame_ = new global::Lspb.SrvEnterGame();
+          case 810: {
+            if (srvEnterRoom_ == null) {
+              srvEnterRoom_ = new global::Lspb.SrvEnterRoom();
             }
-            input.ReadMessage(srvEnterGame_);
+            input.ReadMessage(srvEnterRoom_);
+            break;
+          }
+          case 818: {
+            if (srvInitOver_ == null) {
+              srvInitOver_ = new global::Lspb.SrvInitOver();
+            }
+            input.ReadMessage(srvInitOver_);
+            break;
+          }
+          case 8010: {
+            if (bGameInit_ == null) {
+              bGameInit_ = new global::Lspb.BGameInit();
+            }
+            input.ReadMessage(bGameInit_);
+            break;
+          }
+          case 8018: {
+            if (bGameStart_ == null) {
+              bGameStart_ = new global::Lspb.BGameStart();
+            }
+            input.ReadMessage(bGameStart_);
+            break;
+          }
+          case 8026: {
+            if (bGameFrame_ == null) {
+              bGameFrame_ = new global::Lspb.BGameFrame();
+            }
+            input.ReadMessage(bGameFrame_);
             break;
           }
         }

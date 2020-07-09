@@ -57,7 +57,9 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CliReq, userid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CliReq, moduleid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CliReq, methodid_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CliReq, clientergame_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CliReq, clienterroom_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CliReq, cliinitover_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CliReq, clioperate_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(CliReq)},
@@ -97,8 +99,12 @@ void TableStruct::InitDefaultsImpl() {
   ::lspb::protobuf_gameProto_2eproto::InitDefaults();
   _CliReq_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
-      &_CliReq_default_instance_);_CliReq_default_instance_._instance.get_mutable()->clientergame_ = const_cast< ::lspb::CliEnterGame*>(
-      ::lspb::CliEnterGame::internal_default_instance());
+      &_CliReq_default_instance_);_CliReq_default_instance_._instance.get_mutable()->clienterroom_ = const_cast< ::lspb::CliEnterRoom*>(
+      ::lspb::CliEnterRoom::internal_default_instance());
+  _CliReq_default_instance_._instance.get_mutable()->cliinitover_ = const_cast< ::lspb::CliInitOver*>(
+      ::lspb::CliInitOver::internal_default_instance());
+  _CliReq_default_instance_._instance.get_mutable()->clioperate_ = const_cast< ::lspb::CliOperate*>(
+      ::lspb::CliOperate::internal_default_instance());
 }
 
 void InitDefaults() {
@@ -110,15 +116,18 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\014cliReq.proto\022\004lspb\032\014lsEnum.proto\032\017game"
-      "Proto.proto\"\213\001\n\006CliReq\022\016\n\006userId\030\001 \001(\005\022 "
+      "Proto.proto\"\331\001\n\006CliReq\022\016\n\006userId\030\001 \001(\005\022 "
       "\n\010moduleId\030\002 \001(\0162\016.lspb.ModuleId\022%\n\010meth"
       "odId\030\003 \001(\0162\023.lspb.ClientMsgType\022(\n\014cliEn"
-      "terGame\030\004 \001(\0132\022.lspb.CliEnterGame*6\n\rCli"
-      "entMsgType\022\023\n\017errorClientType\020\000\022\020\n\014cliEn"
-      "terGame\020eB\022\n\020org.bro.lssrv.pbb\006proto3"
+      "terRoom\030e \001(\0132\022.lspb.CliEnterRoom\022&\n\013cli"
+      "InitOver\030f \001(\0132\021.lspb.CliInitOver\022$\n\ncli"
+      "Operate\030g \001(\0132\020.lspb.CliOperate*W\n\rClien"
+      "tMsgType\022\023\n\017errorClientType\020\000\022\020\n\014cliEnte"
+      "rRoom\020e\022\017\n\013cliInitOver\020f\022\016\n\ncliOperate\020g"
+      "B\022\n\020org.bro.lssrv.pbb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 277);
+      descriptor, 388);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "cliReq.proto", &protobuf_RegisterTypes);
   ::lspb::protobuf_lsEnum_2eproto::AddDescriptors();
@@ -147,6 +156,8 @@ bool ClientMsgType_IsValid(int value) {
   switch (value) {
     case 0:
     case 101:
+    case 102:
+    case 103:
       return true;
     default:
       return false;
@@ -160,7 +171,9 @@ bool ClientMsgType_IsValid(int value) {
 const int CliReq::kUserIdFieldNumber;
 const int CliReq::kModuleIdFieldNumber;
 const int CliReq::kMethodIdFieldNumber;
-const int CliReq::kCliEnterGameFieldNumber;
+const int CliReq::kCliEnterRoomFieldNumber;
+const int CliReq::kCliInitOverFieldNumber;
+const int CliReq::kCliOperateFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 CliReq::CliReq()
@@ -176,10 +189,20 @@ CliReq::CliReq(const CliReq& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_clientergame()) {
-    clientergame_ = new ::lspb::CliEnterGame(*from.clientergame_);
+  if (from.has_clienterroom()) {
+    clienterroom_ = new ::lspb::CliEnterRoom(*from.clienterroom_);
   } else {
-    clientergame_ = NULL;
+    clienterroom_ = NULL;
+  }
+  if (from.has_cliinitover()) {
+    cliinitover_ = new ::lspb::CliInitOver(*from.cliinitover_);
+  } else {
+    cliinitover_ = NULL;
+  }
+  if (from.has_clioperate()) {
+    clioperate_ = new ::lspb::CliOperate(*from.clioperate_);
+  } else {
+    clioperate_ = NULL;
   }
   ::memcpy(&userid_, &from.userid_,
     static_cast<size_t>(reinterpret_cast<char*>(&methodid_) -
@@ -188,9 +211,9 @@ CliReq::CliReq(const CliReq& from)
 }
 
 void CliReq::SharedCtor() {
-  ::memset(&clientergame_, 0, static_cast<size_t>(
+  ::memset(&clienterroom_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&methodid_) -
-      reinterpret_cast<char*>(&clientergame_)) + sizeof(methodid_));
+      reinterpret_cast<char*>(&clienterroom_)) + sizeof(methodid_));
   _cached_size_ = 0;
 }
 
@@ -200,7 +223,9 @@ CliReq::~CliReq() {
 }
 
 void CliReq::SharedDtor() {
-  if (this != internal_default_instance()) delete clientergame_;
+  if (this != internal_default_instance()) delete clienterroom_;
+  if (this != internal_default_instance()) delete cliinitover_;
+  if (this != internal_default_instance()) delete clioperate_;
 }
 
 void CliReq::SetCachedSize(int size) const {
@@ -232,10 +257,18 @@ void CliReq::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == NULL && clientergame_ != NULL) {
-    delete clientergame_;
+  if (GetArenaNoVirtual() == NULL && clienterroom_ != NULL) {
+    delete clienterroom_;
   }
-  clientergame_ = NULL;
+  clienterroom_ = NULL;
+  if (GetArenaNoVirtual() == NULL && cliinitover_ != NULL) {
+    delete cliinitover_;
+  }
+  cliinitover_ = NULL;
+  if (GetArenaNoVirtual() == NULL && clioperate_ != NULL) {
+    delete clioperate_;
+  }
+  clioperate_ = NULL;
   ::memset(&userid_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&methodid_) -
       reinterpret_cast<char*>(&userid_)) + sizeof(methodid_));
@@ -248,7 +281,7 @@ bool CliReq::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:lspb.CliReq)
   for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(16383u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
@@ -296,12 +329,36 @@ bool CliReq::MergePartialFromCodedStream(
         break;
       }
 
-      // .lspb.CliEnterGame cliEnterGame = 4;
-      case 4: {
+      // .lspb.CliEnterRoom cliEnterRoom = 101;
+      case 101: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(42u /* 810 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_clientergame()));
+               input, mutable_clienterroom()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .lspb.CliInitOver cliInitOver = 102;
+      case 102: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(50u /* 818 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_cliinitover()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .lspb.CliOperate cliOperate = 103;
+      case 103: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(58u /* 826 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_clioperate()));
         } else {
           goto handle_unusual;
         }
@@ -351,10 +408,22 @@ void CliReq::SerializeWithCachedSizes(
       3, this->methodid(), output);
   }
 
-  // .lspb.CliEnterGame cliEnterGame = 4;
-  if (this->has_clientergame()) {
+  // .lspb.CliEnterRoom cliEnterRoom = 101;
+  if (this->has_clienterroom()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, *this->clientergame_, output);
+      101, *this->clienterroom_, output);
+  }
+
+  // .lspb.CliInitOver cliInitOver = 102;
+  if (this->has_cliinitover()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      102, *this->cliinitover_, output);
+  }
+
+  // .lspb.CliOperate cliOperate = 103;
+  if (this->has_clioperate()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      103, *this->clioperate_, output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -388,11 +457,25 @@ void CliReq::SerializeWithCachedSizes(
       3, this->methodid(), target);
   }
 
-  // .lspb.CliEnterGame cliEnterGame = 4;
-  if (this->has_clientergame()) {
+  // .lspb.CliEnterRoom cliEnterRoom = 101;
+  if (this->has_clienterroom()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        4, *this->clientergame_, deterministic, target);
+        101, *this->clienterroom_, deterministic, target);
+  }
+
+  // .lspb.CliInitOver cliInitOver = 102;
+  if (this->has_cliinitover()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        102, *this->cliinitover_, deterministic, target);
+  }
+
+  // .lspb.CliOperate cliOperate = 103;
+  if (this->has_clioperate()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        103, *this->clioperate_, deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -412,11 +495,25 @@ size_t CliReq::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // .lspb.CliEnterGame cliEnterGame = 4;
-  if (this->has_clientergame()) {
-    total_size += 1 +
+  // .lspb.CliEnterRoom cliEnterRoom = 101;
+  if (this->has_clienterroom()) {
+    total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->clientergame_);
+        *this->clienterroom_);
+  }
+
+  // .lspb.CliInitOver cliInitOver = 102;
+  if (this->has_cliinitover()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->cliinitover_);
+  }
+
+  // .lspb.CliOperate cliOperate = 103;
+  if (this->has_clioperate()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->clioperate_);
   }
 
   // int32 userId = 1;
@@ -467,8 +564,14 @@ void CliReq::MergeFrom(const CliReq& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_clientergame()) {
-    mutable_clientergame()->::lspb::CliEnterGame::MergeFrom(from.clientergame());
+  if (from.has_clienterroom()) {
+    mutable_clienterroom()->::lspb::CliEnterRoom::MergeFrom(from.clienterroom());
+  }
+  if (from.has_cliinitover()) {
+    mutable_cliinitover()->::lspb::CliInitOver::MergeFrom(from.cliinitover());
+  }
+  if (from.has_clioperate()) {
+    mutable_clioperate()->::lspb::CliOperate::MergeFrom(from.clioperate());
   }
   if (from.userid() != 0) {
     set_userid(from.userid());
@@ -505,7 +608,9 @@ void CliReq::Swap(CliReq* other) {
 }
 void CliReq::InternalSwap(CliReq* other) {
   using std::swap;
-  swap(clientergame_, other->clientergame_);
+  swap(clienterroom_, other->clienterroom_);
+  swap(cliinitover_, other->cliinitover_);
+  swap(clioperate_, other->clioperate_);
   swap(userid_, other->userid_);
   swap(moduleid_, other->moduleid_);
   swap(methodid_, other->methodid_);
@@ -563,44 +668,124 @@ void CliReq::set_methodid(::lspb::ClientMsgType value) {
   // @@protoc_insertion_point(field_set:lspb.CliReq.methodId)
 }
 
-// .lspb.CliEnterGame cliEnterGame = 4;
-bool CliReq::has_clientergame() const {
-  return this != internal_default_instance() && clientergame_ != NULL;
+// .lspb.CliEnterRoom cliEnterRoom = 101;
+bool CliReq::has_clienterroom() const {
+  return this != internal_default_instance() && clienterroom_ != NULL;
 }
-void CliReq::clear_clientergame() {
-  if (GetArenaNoVirtual() == NULL && clientergame_ != NULL) delete clientergame_;
-  clientergame_ = NULL;
+void CliReq::clear_clienterroom() {
+  if (GetArenaNoVirtual() == NULL && clienterroom_ != NULL) delete clienterroom_;
+  clienterroom_ = NULL;
 }
-const ::lspb::CliEnterGame& CliReq::clientergame() const {
-  const ::lspb::CliEnterGame* p = clientergame_;
-  // @@protoc_insertion_point(field_get:lspb.CliReq.cliEnterGame)
-  return p != NULL ? *p : *reinterpret_cast<const ::lspb::CliEnterGame*>(
-      &::lspb::_CliEnterGame_default_instance_);
+const ::lspb::CliEnterRoom& CliReq::clienterroom() const {
+  const ::lspb::CliEnterRoom* p = clienterroom_;
+  // @@protoc_insertion_point(field_get:lspb.CliReq.cliEnterRoom)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::CliEnterRoom*>(
+      &::lspb::_CliEnterRoom_default_instance_);
 }
-::lspb::CliEnterGame* CliReq::mutable_clientergame() {
+::lspb::CliEnterRoom* CliReq::mutable_clienterroom() {
   
-  if (clientergame_ == NULL) {
-    clientergame_ = new ::lspb::CliEnterGame;
+  if (clienterroom_ == NULL) {
+    clienterroom_ = new ::lspb::CliEnterRoom;
   }
-  // @@protoc_insertion_point(field_mutable:lspb.CliReq.cliEnterGame)
-  return clientergame_;
+  // @@protoc_insertion_point(field_mutable:lspb.CliReq.cliEnterRoom)
+  return clienterroom_;
 }
-::lspb::CliEnterGame* CliReq::release_clientergame() {
-  // @@protoc_insertion_point(field_release:lspb.CliReq.cliEnterGame)
+::lspb::CliEnterRoom* CliReq::release_clienterroom() {
+  // @@protoc_insertion_point(field_release:lspb.CliReq.cliEnterRoom)
   
-  ::lspb::CliEnterGame* temp = clientergame_;
-  clientergame_ = NULL;
+  ::lspb::CliEnterRoom* temp = clienterroom_;
+  clienterroom_ = NULL;
   return temp;
 }
-void CliReq::set_allocated_clientergame(::lspb::CliEnterGame* clientergame) {
-  delete clientergame_;
-  clientergame_ = clientergame;
-  if (clientergame) {
+void CliReq::set_allocated_clienterroom(::lspb::CliEnterRoom* clienterroom) {
+  delete clienterroom_;
+  clienterroom_ = clienterroom;
+  if (clienterroom) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:lspb.CliReq.cliEnterGame)
+  // @@protoc_insertion_point(field_set_allocated:lspb.CliReq.cliEnterRoom)
+}
+
+// .lspb.CliInitOver cliInitOver = 102;
+bool CliReq::has_cliinitover() const {
+  return this != internal_default_instance() && cliinitover_ != NULL;
+}
+void CliReq::clear_cliinitover() {
+  if (GetArenaNoVirtual() == NULL && cliinitover_ != NULL) delete cliinitover_;
+  cliinitover_ = NULL;
+}
+const ::lspb::CliInitOver& CliReq::cliinitover() const {
+  const ::lspb::CliInitOver* p = cliinitover_;
+  // @@protoc_insertion_point(field_get:lspb.CliReq.cliInitOver)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::CliInitOver*>(
+      &::lspb::_CliInitOver_default_instance_);
+}
+::lspb::CliInitOver* CliReq::mutable_cliinitover() {
+  
+  if (cliinitover_ == NULL) {
+    cliinitover_ = new ::lspb::CliInitOver;
+  }
+  // @@protoc_insertion_point(field_mutable:lspb.CliReq.cliInitOver)
+  return cliinitover_;
+}
+::lspb::CliInitOver* CliReq::release_cliinitover() {
+  // @@protoc_insertion_point(field_release:lspb.CliReq.cliInitOver)
+  
+  ::lspb::CliInitOver* temp = cliinitover_;
+  cliinitover_ = NULL;
+  return temp;
+}
+void CliReq::set_allocated_cliinitover(::lspb::CliInitOver* cliinitover) {
+  delete cliinitover_;
+  cliinitover_ = cliinitover;
+  if (cliinitover) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:lspb.CliReq.cliInitOver)
+}
+
+// .lspb.CliOperate cliOperate = 103;
+bool CliReq::has_clioperate() const {
+  return this != internal_default_instance() && clioperate_ != NULL;
+}
+void CliReq::clear_clioperate() {
+  if (GetArenaNoVirtual() == NULL && clioperate_ != NULL) delete clioperate_;
+  clioperate_ = NULL;
+}
+const ::lspb::CliOperate& CliReq::clioperate() const {
+  const ::lspb::CliOperate* p = clioperate_;
+  // @@protoc_insertion_point(field_get:lspb.CliReq.cliOperate)
+  return p != NULL ? *p : *reinterpret_cast<const ::lspb::CliOperate*>(
+      &::lspb::_CliOperate_default_instance_);
+}
+::lspb::CliOperate* CliReq::mutable_clioperate() {
+  
+  if (clioperate_ == NULL) {
+    clioperate_ = new ::lspb::CliOperate;
+  }
+  // @@protoc_insertion_point(field_mutable:lspb.CliReq.cliOperate)
+  return clioperate_;
+}
+::lspb::CliOperate* CliReq::release_clioperate() {
+  // @@protoc_insertion_point(field_release:lspb.CliReq.cliOperate)
+  
+  ::lspb::CliOperate* temp = clioperate_;
+  clioperate_ = NULL;
+  return temp;
+}
+void CliReq::set_allocated_clioperate(::lspb::CliOperate* clioperate) {
+  delete clioperate_;
+  clioperate_ = clioperate;
+  if (clioperate) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:lspb.CliReq.cliOperate)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
