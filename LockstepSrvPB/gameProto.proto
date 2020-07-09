@@ -3,11 +3,55 @@ syntax = "proto3";
 package lspb;
 
 option java_package = "org.bro.lssrv.pb";
-
-message CliEnterGame{
-
+/** 进入房间 */
+message CliEnterRoom{
+  /** 房间号 */
+  int32 roomId = 1;
+  /** 昵称 */
+  string name = 2;
 }
 
-message SrvEnterGame{
+message SrvEnterRoom{
+  /** 服务器本次分配的id号,链接断开之前不会改变*/
+  int32 playerId = 1;
+}
+/** 推送初始化信息 */
+message BGameInit{
+  /** 本次随机数种子 */
+  int32 seed = 1;
+  /** 每个玩家的信息列表 */
+  repeated PlayerInfo pList = 2;
+}
 
+message PlayerInfo{
+  /** id */
+  int32 playerId = 1;
+  /** 昵称 */
+  string name = 2;
+  /** 出生点编号 */
+  int32 startPoint = 3;
+}
+
+/** 通知服务器初始化完成 */
+message CliInitOver{}
+message SrvInitOver{}
+
+/** 所有客户端初始化完毕后，服务器推送正式开始消息 */
+message BGameStart{}
+
+/** 游戏逻辑帧推送 */
+message BGameFrame{
+  /** frameId */
+  int32 fId = 1;
+  /** 每个玩家的具体操作 */
+  repeated CliOperate operList = 2;
+}
+/** 客户端操作 */
+message CliOperate{
+  /** 方向,保存3位小数 */
+  float direction = 1;
+  /** 是否开炮 */
+  bool isFire = 2;
+  /** player id,客户端不传，服务器推送前写入 */
+  int32 playerId = 3;
 }

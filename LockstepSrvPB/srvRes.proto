@@ -16,12 +16,34 @@ message SrvRes {
   /** 错误展示字段，如果result不为0，则取该字段给用户展示 */
   string errStr = 3;
   /** 具体返回内容proto */
-  SrvEnterGame srvEnterGame = 4;
+  /** 玩家进入房间 */
+  SrvEnterRoom srvEnterRoom = 101;
+  /** 初始化完成ACK */
+  SrvInitOver srvInitOver = 102;
+  
+  /** 服务器推送客户端 */
+  /** 游戏初始化信息 */
+  BGameInit bGameInit = 1001;
+  /** 游戏正式开始推送 */
+  BGameStart bGameStart = 1002;
+  /** 游戏逻辑帧操作 */
+  BGameFrame bGameFrame = 1003;
 }
 
 enum SrvMsgType {
   /** default */
   errorClientType = 0;
   /** 进入游戏 */
-  serverEnterGame = 101;
+  srvEnterRoom = 101;
+  /** 初始化完成ACK */
+  srvInitOver = 102;
+  
+  
+  /** 推送 */
+  /** 房间初始化 */
+  bGameInit = 1001;
+  /** 游戏正式开始推送 */
+  bGameStart = 1002;
+  /** 游戏逻辑帧操作 */
+  bGameFrame = 1003;
 }

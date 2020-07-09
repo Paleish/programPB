@@ -16,12 +16,21 @@ message CliReq {
   /** 请求方法名 */
   ClientMsgType methodId = 3;
   /** 具体请求内容proto */
-  CliEnterGame cliEnterGame = 4;
+  /** 进入房间 */
+  CliEnterRoom cliEnterRoom = 101;
+  /** 客户端初始化完成 */
+  CliInitOver cliInitOver = 102;
+  /** 客户端对坦克的具体操作 */
+  CliOperate cliOperate = 103;
 }
 
 enum ClientMsgType {
   /** default */
   errorClientType = 0;
   /** 进入游戏 */
-  cliEnterGame = 101;
+  cliEnterRoom = 101;
+  /** 通知服务器初始化完成 */
+  cliInitOver = 102;
+  /** 客户端对坦克的具体操作 */
+  cliOperate = 103;
 }
