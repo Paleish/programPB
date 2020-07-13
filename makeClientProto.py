@@ -1,5 +1,6 @@
 # coding=utf-8
 import os
+import platform
 
 ReceiveProto = """
 using Google.Protobuf;
@@ -90,17 +91,17 @@ funcPara = """            %s.%s = %s;
 def getFileContent(fileName):
     all_the_text = ""
     try:
-        file_object = open(fileName, 'r')
+        file_object = open(fileName, "r")
         all_the_text = file_object.read()
         file_object.close()
     except:
         pass
     return all_the_text
 
-def writeFileContent(fileName, strContent, strEncoding='utf-8'):
+def writeFileContent(fileName, strContent, strEncoding="utf-8"):
     try:
-        bycontent = strContent.encode('utf-8')
-        output = open(fileName, 'wb')
+        bycontent = strContent.encode("utf-8")
+        output = open(fileName, "wb")
         output.write(bycontent)
         output.close()
     except:
@@ -131,7 +132,7 @@ def parse_proto(file):
         if message != False and ("=" in line):
             defType, _, valueName = line.partition(" ")
             valueName, _, temp= valueName.partition(" ")
-            if defType == 'repeated':
+            if defType == "repeated":
                 defType = "IEnumerable<%s>" % (valueName)
                 valueName, _, _= temp.partition(" ")
             structList[message].append([defType.strip(), valueName])
@@ -155,8 +156,8 @@ def parse_proto(file):
     return (packagename,structList)
 
 def make_send_proto():
-    (packagename, structList) = parse_proto('/Users/yons/workspace/programPB/LockstepSrvPB/gameProto.proto')
-    funcstr = ''
+    (packagename, structList) = parse_proto("/Users/yons/workspace/programPB/LockstepSrvPB/gameProto.proto")
+    funcstr = ""
     for funcName in structList:
         if "Cli" in funcName:
             objname = funcName[0].lower() + funcName[1:]
@@ -169,31 +170,31 @@ def make_send_proto():
                 deftype.append(item[0])
                 valuename.append(item[1])
 
-            para = ''
-            funcpara = ''
+            para = ""
+            funcpara = ""
             for i in range(len(deftype)):
-                _deftype = deftype[i].replace('32', '').replace('64', '')
-                para += (_deftype + ' ' + valuename[i])
+                _deftype = deftype[i].replace("32", "").replace("64", "")
+                para += (_deftype + " " + valuename[i])
                 _para = valuename[i][0].upper() + valuename[i][1:]
                 funcpara += funcPara % (objname, _para, valuename[i])
                 if i < len(deftype) - 1:
-                    para += ', '
+                    para += ", "
 
             funcstr += funcClient % (funcName, para, funcName, objname, funcName, funcpara, funcName, funcName, objname)
     deleteFile("Client_CSHARP/cmd/SendProto.cs")
     writeFileContent("Client_CSHARP/cmd/SendProto.cs", SendProto % (funcstr))
 
 def make_receive_proto():
-    (packagename, structList) = parse_proto('/Users/yons/workspace/programPB/LockstepSrvPB/srvRes.proto')
-    switchstr = ''
-    funcstr = ''
+    (packagename, structList) = parse_proto("/Users/yons/workspace/programPB/LockstepSrvPB/srvRes.proto")
+    switchstr = ""
+    funcstr = ""
     for funcName in structList:
         deftype = []
         value = structList[funcName]
 
         for i in range(len(value)):
             item = value[i]
-            if item[0] != 'SrvMsgType' and  item[0] != 'Result' and  item[0] != 'string':
+            if item[0] != "SrvMsgType" and  item[0] != "Result" and  item[0] != "string":
                 deftype.append(item[0])
 
         for i in range(len(deftype)):
@@ -203,6 +204,18 @@ def make_receive_proto():
     deleteFile("Client_CSHARP/cmd/ReceiveProto.cs")
     writeFileContent("Client_CSHARP/cmd/ReceiveProto.cs", ReceiveProto % (switchstr, funcstr))
 
+def make_proto():
+    for root, dirs, files in os.walk("./LockstepSrvPB"):
+        for i in range(len(files)):
+            (filepath, tempfilename) = os.path.split(files[i]);
+            (shotname, extension) = os.path.splitext(tempfilename);
+            if extension == '.proto':
+                if (platform.system() == 'Windows'):
+                    os.system("./LockstepSrvPB/protoc.exe %s --csharp_out=./Client_CSHARP/pb -I ./LockstepSrvPB" % (root + "/" + files[i]))
+                else:
+                    os.system("protoc %s --csharp_out=./Client_CSHARP/pb -I ./LockstepSrvPB" % (root + "/" + files[i]))
+
 if __name__ == "__main__":
-    make_send_proto();
-    make_receive_proto();
+    make_proto()
+    make_send_proto()
+    make_receive_proto()
