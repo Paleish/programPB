@@ -1,1 +1,4 @@
 *.java
+.idea
+.DS_Store
+*.cs
