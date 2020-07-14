@@ -134,7 +134,7 @@ def parse_proto(file):
             defType, _, valueName = line.partition(" ")
             valueName, _, temp= valueName.partition(" ")
             if defType == "repeated":
-                defType = "IEnumerable<%s>" % (valueName)
+                defType = "List<%s>" % (valueName)
                 valueName, _, _= temp.partition(" ")
             structList[message].append([defType.strip(), valueName])
         if "}" in line:
@@ -179,10 +179,10 @@ def make_send_proto():
                     _deftype = "int"
                 elif deftype[i] == "int64":
                     _deftype = "long"
-                elif deftype[i] == "IEnumerable<int32>":
-                    _deftype = "IEnumerable<int>"
-                elif deftype[i] == "IEnumerable<int64>":
-                    _deftype = "IEnumerable<long>"
+                elif deftype[i] == "List<int32>":
+                    _deftype = "List<int>"
+                elif deftype[i] == "List<int64>":
+                    _deftype = "List<long>"
                 else:
                     _deftype = deftype[i]
 
@@ -196,13 +196,11 @@ def make_send_proto():
                     default_value = "false"
                 elif _deftype == "string":
                     default_value = "\"\""
-                elif "IEnumerable" in _deftype:
-                    default_value = "[]"
                 else:
                     default_value = "null"
                 para += (_deftype + " " + valuename[i] + " = " + default_value)
                 _para = valuename[i][0].upper() + valuename[i][1:]
-                if "IEnumerable" in _deftype:
+                if "List" in _deftype:
                     funcpara += listPara % (objname, _para, valuename[i])
                 else:
                     funcpara += funcPara % (objname, _para, valuename[i])
