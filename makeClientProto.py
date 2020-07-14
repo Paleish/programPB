@@ -79,7 +79,7 @@ funcClient = """
         {
             %s %s = new %s();
 %s
-            CliReq req = CreateCliReq(ClientMsgType.%s);
+            CliReq req = CreateCliReq(ClientMsgType.%s, userId, moduleId);
             req.%s = %s;
             return req;
         }
@@ -157,7 +157,7 @@ def parse_proto(file):
     return (packagename,structList)
 
 def make_send_proto():
-    (packagename, structList) = parse_proto("/Users/yons/workspace/programPB/LockstepSrvPB/gameProto.proto")
+    (packagename, structList) = parse_proto("./LockstepSrvPB/gameProto.proto")
     funcstr = ""
     for funcName in structList:
         if "Cli" in funcName:
@@ -209,12 +209,12 @@ def make_send_proto():
                 if i < len(deftype) - 1:
                     para += ", "
 
-            funcstr += funcClient % (funcName, para, funcName, objname, funcName, funcpara, funcName, funcName, objname)
+            funcstr += funcClient % (funcName, para == "" and "int userId = 1, ModuleId moduleId = ModuleId.Game" or ("%s, int userId = 1, ModuleId moduleId = ModuleId.Game" % para), funcName, objname, funcName, funcpara, funcName, funcName, objname)
     deleteFile("Client_CSHARP/cmd/SendProto.cs")
     writeFileContent("Client_CSHARP/cmd/SendProto.cs", SendProto % (funcstr))
 
 def make_receive_proto():
-    (packagename, structList) = parse_proto("/Users/yons/workspace/programPB/LockstepSrvPB/srvRes.proto")
+    (packagename, structList) = parse_proto("./LockstepSrvPB/srvRes.proto")
     switchstr = ""
     funcstr = ""
     for funcName in structList:
