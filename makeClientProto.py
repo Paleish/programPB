@@ -87,7 +87,8 @@ funcClient = """
 
 funcPara = """            %s.%s = %s;
 """
-
+listPara = """            %s.%s.AddRange(%s);
+"""
 def getFileContent(fileName):
     all_the_text = ""
     try:
@@ -172,16 +173,39 @@ def make_send_proto():
 
             para = ""
             funcpara = ""
+            default_value = ""
             for i in range(len(deftype)):
                 if deftype[i] == "int32":
                     _deftype = "int"
                 elif deftype[i] == "int64":
                     _deftype = "long"
+                elif deftype[i] == "IEnumerable<int32>":
+                    _deftype = "IEnumerable<int>"
+                elif deftype[i] == "IEnumerable<int64>":
+                    _deftype = "IEnumerable<long>"
                 else:
                     _deftype = deftype[i]
-                para += (_deftype + " " + valuename[i])
+
+                if _deftype == "int" or _deftype == "long":
+                    default_value = "0"
+                elif _deftype == "float":
+                    default_value = "0.0f"
+                elif _deftype == "double":
+                    default_value = "0.0d"
+                elif _deftype == "bool":
+                    default_value = "false"
+                elif _deftype == "string":
+                    default_value = "\"\""
+                elif "IEnumerable" in _deftype:
+                    default_value = "[]"
+                else:
+                    default_value = "null"
+                para += (_deftype + " " + valuename[i] + " = " + default_value)
                 _para = valuename[i][0].upper() + valuename[i][1:]
-                funcpara += funcPara % (objname, _para, valuename[i])
+                if "IEnumerable" in _deftype:
+                    funcpara += listPara % (objname, _para, valuename[i])
+                else:
+                    funcpara += funcPara % (objname, _para, valuename[i])
                 if i < len(deftype) - 1:
                     para += ", "
 

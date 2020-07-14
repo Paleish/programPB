@@ -49,7 +49,7 @@ message BGameFrame{
 /** 客户端操作 */
 message CliOperate{
   /** 方向,保存3位小数 */
-  float direction = 1;
+  string direction = 1;
   /** 是否开炮 */
   bool isFire = 2;
   /** player id,客户端不传，服务器推送前写入 */
