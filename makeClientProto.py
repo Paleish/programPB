@@ -173,7 +173,12 @@ def make_send_proto():
             para = ""
             funcpara = ""
             for i in range(len(deftype)):
-                _deftype = deftype[i].replace("32", "").replace("64", "")
+                if deftype[i] == "int32":
+                    _deftype = "int"
+                elif deftype[i] == "int64":
+                    _deftype = "long"
+                else:
+                    _deftype = deftype[i]
                 para += (_deftype + " " + valuename[i])
                 _para = valuename[i][0].upper() + valuename[i][1:]
                 funcpara += funcPara % (objname, _para, valuename[i])
