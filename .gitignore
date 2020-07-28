@@ -2,3 +2,6 @@
 .idea
 .DS_Store
 *.cs
+*.cc
+*.h
+*.cpp

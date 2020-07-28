@@ -8,7 +8,7 @@ using Lspb;
 using System;
 using System.Collections.Generic;
 
-namespace CSharpClient.Net.Cmd
+namespace CSharpServer.Net.Cmd
 {
     public class ReceiveProto
     {
@@ -19,13 +19,13 @@ namespace CSharpClient.Net.Cmd
             return message as T;
         }
 
-        public void Decode(byte[] buffer)
+        public void Receive(byte[] buffer)
         {
-            SrvRes res = Deserialize<SrvRes>(buffer);
-            switch (res.MethodId)
+            CliReq req = Deserialize<CliReq>(buffer);
+            switch (req.MethodId)
             {%s
                 default:
-                    Console.WriteLine("proto error no {0}", res.MethodId);
+                    Console.WriteLine("proto error no {0}", req.MethodId);
                     break;
             }
         }
@@ -35,12 +35,12 @@ namespace CSharpClient.Net.Cmd
 """
 
 switchServer = """
-                case SrvMsgType.%s:
-                    %s(res.%s, res.Result, res.ErrStr);
+                case ClientMsgType.%s:
+                    %s(req.%s);
                     break;"""
 
 funcServer = """
-        public virtual void %s(%s msg, Result result, string errStr)
+        protected virtual void %s(%s msg)
         {
             Console.WriteLine("-----------------------no implements %s-----------------------");
         }
@@ -51,22 +51,22 @@ using Google.Protobuf;
 using Lspb;
 using System.Collections.Generic;
 
-namespace CSharpClient.Net.Cmd
+namespace CSharpServer.Net.Cmd
 {
     public class SendProto
     {
-        public static byte[] Serialize<T>(T obj) where T : IMessage
+        private static byte[] Serialize<T>(T obj) where T : IMessage
         {
             return obj.ToByteArray();
         }
 
-        private static CliReq CreateCliReq(ClientMsgType methodId, int userId = 1, ModuleId moduleId = ModuleId.Game)
+        private static SrvRes CreateSrvRes(SrvMsgType methodId, Result result = Result.Success, string errStr = "")
         {
-            return new CliReq
+            return new SrvRes
             {
-                UserId = userId,
-                ModuleId = moduleId,
                 MethodId = methodId,
+                Result = result,
+                ErrStr = errStr,
             };
         }
 %s
@@ -75,13 +75,14 @@ namespace CSharpClient.Net.Cmd
 """
 
 funcClient = """
-        public static CliReq %s(%s)
+        public static void %s(%s)
         {
             %s %s = new %s();
 %s
-            CliReq req = CreateCliReq(ClientMsgType.%s);
-            req.%s = %s;
-            return req;
+            SrvRes res = CreateSrvRes(SrvMsgType.%s, result, errStr);
+            res.%s = %s;
+
+            UdpSocket.Send(Serialize(res));
         }
 """
 
@@ -134,7 +135,7 @@ def parse_proto(file):
             defType, _, valueName = line.partition(" ")
             valueName, _, temp= valueName.partition(" ")
             if defType == "repeated":
-                defType = "IEnumerable<%s>" % (valueName)
+                defType = "List<%s>" % (valueName)
                 valueName, _, _= temp.partition(" ")
             structList[message].append([defType.strip(), valueName])
         if "}" in line:
@@ -157,10 +158,10 @@ def parse_proto(file):
     return (packagename,structList)
 
 def make_send_proto():
-    (packagename, structList) = parse_proto("/Users/yons/workspace/programPB/LockstepSrvPB/gameProto.proto")
+    (packagename, structList) = parse_proto("./LockstepSrvPB/gameProto.proto")
     funcstr = ""
     for funcName in structList:
-        if "Cli" in funcName:
+        if "Srv" in funcName or "BGame" in funcName:
             objname = funcName[0].lower() + funcName[1:]
             deftype = []
             valuename = []
@@ -179,10 +180,10 @@ def make_send_proto():
                     _deftype = "int"
                 elif deftype[i] == "int64":
                     _deftype = "long"
-                elif deftype[i] == "IEnumerable<int32>":
-                    _deftype = "IEnumerable<int>"
-                elif deftype[i] == "IEnumerable<int64>":
-                    _deftype = "IEnumerable<long>"
+                elif deftype[i] == "List<int32>":
+                    _deftype = "List<int>"
+                elif deftype[i] == "List<int64>":
+                    _deftype = "List<long>"
                 else:
                     _deftype = deftype[i]
 
@@ -196,25 +197,23 @@ def make_send_proto():
                     default_value = "false"
                 elif _deftype == "string":
                     default_value = "\"\""
-                elif "IEnumerable" in _deftype:
-                    default_value = "[]"
                 else:
                     default_value = "null"
                 para += (_deftype + " " + valuename[i] + " = " + default_value)
                 _para = valuename[i][0].upper() + valuename[i][1:]
-                if "IEnumerable" in _deftype:
+                if "List" in _deftype:
                     funcpara += listPara % (objname, _para, valuename[i])
                 else:
                     funcpara += funcPara % (objname, _para, valuename[i])
                 if i < len(deftype) - 1:
                     para += ", "
 
-            funcstr += funcClient % (funcName, para, funcName, objname, funcName, funcpara, funcName, funcName, objname)
-    deleteFile("Client_CSHARP/cmd/SendProto.cs")
-    writeFileContent("Client_CSHARP/cmd/SendProto.cs", SendProto % (funcstr))
+            funcstr += funcClient % (funcName, para == "" and "Result result = Result.Success, string errStr = \"\"" or ("%s, Result result = Result.Success, string errStr = \"\"" % para), funcName, objname, funcName, funcpara, funcName, funcName, objname)
+    deleteFile("Server_CSHARP/cmd/SendProto.cs")
+    writeFileContent("Server_CSHARP/cmd/SendProto.cs", SendProto % (funcstr))
 
 def make_receive_proto():
-    (packagename, structList) = parse_proto("/Users/yons/workspace/programPB/LockstepSrvPB/srvRes.proto")
+    (packagename, structList) = parse_proto("./LockstepSrvPB/cliReq.proto")
     switchstr = ""
     funcstr = ""
     for funcName in structList:
@@ -223,15 +222,15 @@ def make_receive_proto():
 
         for i in range(len(value)):
             item = value[i]
-            if item[0] != "SrvMsgType" and  item[0] != "Result" and  item[0] != "string":
+            if item[0] != "ClientMsgType" and  item[0] != "int32" and  item[0] != "ModuleId":
                 deftype.append(item[0])
 
         for i in range(len(deftype)):
             switchstr += switchServer % (deftype[i], deftype[i], deftype[i])
             funcstr += funcServer % (deftype[i], deftype[i], deftype[i])
 
-    deleteFile("Client_CSHARP/cmd/ReceiveProto.cs")
-    writeFileContent("Client_CSHARP/cmd/ReceiveProto.cs", ReceiveProto % (switchstr, funcstr))
+    deleteFile("Server_CSHARP/cmd/ReceiveProto.cs")
+    writeFileContent("Server_CSHARP/cmd/ReceiveProto.cs", ReceiveProto % (switchstr, funcstr))
 
 def make_proto():
     for root, dirs, files in os.walk("./LockstepSrvPB"):
@@ -240,9 +239,9 @@ def make_proto():
             (shotname, extension) = os.path.splitext(tempfilename);
             if extension == '.proto':
                 if (platform.system() == 'Windows'):
-                    os.system("./LockstepSrvPB/protoc.exe %s --csharp_out=./Client_CSHARP/pb -I ./LockstepSrvPB" % (root + "/" + files[i]))
+                    os.system("./LockstepSrvPB/protoc.exe %s --csharp_out=./Server_CSHARP/pb -I ./LockstepSrvPB" % (root + "/" + files[i]))
                 else:
-                    os.system("protoc %s --csharp_out=./Client_CSHARP/pb -I ./LockstepSrvPB" % (root + "/" + files[i]))
+                    os.system("protoc %s --csharp_out=./Server_CSHARP/pb -I ./LockstepSrvPB" % (root + "/" + files[i]))
 
 if __name__ == "__main__":
     make_proto()

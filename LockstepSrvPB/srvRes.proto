@@ -32,7 +32,7 @@ message SrvRes {
 
 enum SrvMsgType {
   /** default */
-  errorClientType = 0;
+  errorServerType = 0;
   /** 进入游戏 */
   srvEnterRoom = 101;
   /** 初始化完成ACK */
