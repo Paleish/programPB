@@ -6,6 +6,7 @@ import "lsEnum.proto";
 import "gameProto.proto";
 
 option java_package = "org.bro.lssrv.pb";
+option java_outer_classname= "SrvResponse";
 
 /** 所有下行请求都是serverResponse，服务器会传递具体内容的标示methodId，客户端根据methodId进行处理 */
 message SrvRes {
