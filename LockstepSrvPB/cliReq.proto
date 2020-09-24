@@ -6,6 +6,7 @@ import "lsEnum.proto";
 import "gameProto.proto";
 
 option java_package = "org.bro.lssrv.pb";
+option java_outer_classname= "CliRequst";
 
 /** 所有上行请求都是clientRequest，服务器根据methodId读取具体的message内容,当 */
 message CliReq {
