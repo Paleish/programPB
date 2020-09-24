@@ -2,8 +2,7 @@
 import os
 import platform
 
-ReceiveProto = """
-using Google.Protobuf;
+ReceiveProto = """using Google.Protobuf;
 using Lspb;
 using System;
 using System.Collections.Generic;
@@ -46,8 +45,7 @@ funcServer = """
         }
 """
 
-SendProto = """
-using Google.Protobuf;
+SendProto = """using Google.Protobuf;
 using Lspb;
 using System.Collections.Generic;
 

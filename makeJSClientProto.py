@@ -2,91 +2,67 @@
 import os
 import platform
 
-ReceiveProto = """using Google.Protobuf;
-using Lspb;
-using System;
-using System.Collections.Generic;
+ReceiveProto = """const proto = require('../pb/srvRes_pb');
 
-namespace CSharpClient.Net.Cmd
-{
-    public class ReceiveProto
-    {
-        private static T Deserialize<T>(byte[] data) where T : class, IMessage, new()
-        {
-            T obj = new T();
-            IMessage message = obj.Descriptor.Parser.ParseFrom(data);
-            return message as T;
+class ReceiveProto {
+    receive(buffer) {
+        let res = proto.SrvRes.deserializeBinary(buffer);
+        switch (res.getMethodid()) {%s
+            default:
+                console.log(`proto error no ${res.getMethodid()}`);
+                break;
         }
-
-        public void Receive(byte[] buffer)
-        {
-            SrvRes res = Deserialize<SrvRes>(buffer);
-            switch (res.MethodId)
-            {%s
-                default:
-                    Console.WriteLine("proto error no {0}", res.MethodId);
-                    break;
-            }
-        }
+    };
 %s
-    }
 }
+
+module.exports = ReceiveProto;
 """
 
 switchServer = """
-                case SrvMsgType.%s:
-                    %s(res.%s, res.Result, res.ErrStr);
-                    break;"""
+            case proto.SrvMsgType.%s:
+                this._%s(res.get%s(), res.getResult(), res.getErrstr());
+                break;"""
 
 funcServer = """
-        protected virtual void %s(%s msg, Result result, string errStr)
-        {
-            Console.WriteLine("-----------------------no implements %s-----------------------");
-        }
+    _%s(msg, result, errStr) {
+        console.log('-----------------------no implements %s-----------------------');
+    };
 """
 
-SendProto = """using Google.Protobuf;
-using Lspb;
-using System.Collections.Generic;
+SendProto = """const ModuleId = require('../pb/lsEnum_pb').ModuleId;
+const UdpSocket = require('../../UdpSocket');
+const proto = require('../pb/cliReq_pb');
 
-namespace CSharpClient.Net.Cmd
-{
-    public class SendProto
-    {
-        private static byte[] Serialize<T>(T obj) where T : IMessage
-        {
-            return obj.ToByteArray();
-        }
-
-        private static CliReq CreateCliReq(ClientMsgType methodId, int userId = 1, ModuleId moduleId = ModuleId.Game)
-        {
-            return new CliReq
-            {
-                UserId = userId,
-                ModuleId = moduleId,
-                MethodId = methodId,
-            };
-        }
+class SendProto {
+    static createCliReq(methodId, userId = 1, moduleId = ModuleId.GAME) {
+        let req = new proto.CliReq();
+        req.setMethodid(methodId);
+        req.setUserid(userId);
+        req.setModuleid(moduleId);
+        return req;
+    };
 %s
-    }
 }
+
+module.exports = SendProto;
 """
 
 funcClient = """
-        public static void %s(%s)
-        {
-            %s %s = new %s();
+    static %s(%s) {
+        let %s = new proto.%s();
 %s
-            CliReq req = CreateCliReq(ClientMsgType.%s, userId, moduleId);
-            req.%s = %s;
+        let req = this.createCliReq(proto.ClientMsgType.%s, userId, moduleId);
+        req.set%s(%s);
 
-            UdpSocket.Send(Serialize(req));
-        }
+        let buffer = req.serializeBinary();
+        UdpSocket.send(buffer);
+    }
 """
 
-funcPara = """            %s.%s = %s;
+funcPara = """        %s.set%s(%s);
 """
-listPara = """            %s.%s.AddRange(%s);
+listPara = """        %s.set%s(%s);
 """
 def getFileContent(fileName):
     all_the_text = ""
@@ -161,6 +137,7 @@ def make_send_proto():
     for funcName in structList:
         if "Cli" in funcName:
             objname = funcName[0].lower() + funcName[1:]
+            _funcName = funcName.lower()
             deftype = []
             valuename = []
             value = structList[funcName]
@@ -197,18 +174,18 @@ def make_send_proto():
                     default_value = "\"\""
                 else:
                     default_value = "null"
-                para += (_deftype + " " + valuename[i] + " = " + default_value)
-                _para = valuename[i][0].upper() + valuename[i][1:]
+                para += (valuename[i] + " = " + default_value)
+                _valuename = valuename[i].lower()
+                _para = _valuename[0].upper() + _valuename[1:].lower()
                 if "List" in _deftype:
-                    funcpara += listPara % (objname, _para, valuename[i])
+                    funcpara += listPara % (_funcName, _para, valuename[i])
                 else:
-                    funcpara += funcPara % (objname, _para, valuename[i])
+                    funcpara += funcPara % (_funcName, _para, valuename[i])
                 if i < len(deftype) - 1:
                     para += ", "
-
-            funcstr += funcClient % (funcName, para == "" and "int userId = 1, ModuleId moduleId = ModuleId.Game" or ("%s, int userId = 1, ModuleId moduleId = ModuleId.Game" % para), funcName, objname, funcName, funcpara, funcName, funcName, objname)
-    deleteFile("Client_CSHARP/cmd/SendProto.cs")
-    writeFileContent("Client_CSHARP/cmd/SendProto.cs", SendProto % (funcstr))
+            funcstr += funcClient % (objname, para == "" and "userId = 1, moduleId = ModuleId.GAME" or ("%s, userId = 1, moduleId = ModuleId.GAME" % para), _funcName, funcName, funcpara, funcName.upper(), _funcName[0].upper()+_funcName[1:], _funcName)
+    deleteFile("Client_JS/cmd/SendProto.js")
+    writeFileContent("Client_JS/cmd/SendProto.js", SendProto % (funcstr))
 
 def make_receive_proto():
     (packagename, structList) = parse_proto("./LockstepSrvPB/srvRes.proto")
@@ -224,11 +201,12 @@ def make_receive_proto():
                 deftype.append(item[0])
 
         for i in range(len(deftype)):
-            switchstr += switchServer % (deftype[i], deftype[i], deftype[i])
-            funcstr += funcServer % (deftype[i], deftype[i], deftype[i])
+            _deftype = deftype[i][0].lower()+deftype[i][1:]
+            switchstr += switchServer % (deftype[i].upper(), _deftype, deftype[i][0].upper() + deftype[i][1:].lower())
+            funcstr += funcServer % (_deftype, _deftype)
 
-    deleteFile("Client_CSHARP/cmd/ReceiveProto.cs")
-    writeFileContent("Client_CSHARP/cmd/ReceiveProto.cs", ReceiveProto % (switchstr, funcstr))
+    deleteFile("Client_JS/cmd/ReceiveProto.js")
+    writeFileContent("Client_JS/cmd/ReceiveProto.js", ReceiveProto % (switchstr, funcstr))
 
 def make_proto():
     for root, dirs, files in os.walk("./LockstepSrvPB"):
@@ -237,9 +215,9 @@ def make_proto():
             (shotname, extension) = os.path.splitext(tempfilename);
             if extension == '.proto':
                 if (platform.system() == 'Windows'):
-                    os.system("./LockstepSrvPB/protoc.exe %s --csharp_out=./Client_CSHARP/pb -I ./LockstepSrvPB" % (root + "/" + files[i]))
+                    os.system("./LockstepSrvPB/protoc.exe %s --js_out=import_style=commonjs,binary:./Client_JS/pb -I ./LockstepSrvPB" % (root + "/" + files[i]))
                 else:
-                    os.system("protoc %s --csharp_out=./Client_CSHARP/pb -I ./LockstepSrvPB" % (root + "/" + files[i]))
+                    os.system("protoc %s --js_out=import_style=commonjs,binary:./Client_JS/pb -I ./LockstepSrvPB" % (root + "/" + files[i]))
 
 if __name__ == "__main__":
     make_proto()
